@@ -118,76 +118,18 @@ void led_off(void)
  */
 void nulluser(void)
 {
-	/* GPIO LED initialization and turn on */
-	GPFSEL1 &= ~(7 << 18); // GPIO Pin 16
-    GPFSEL1 |= 1 << 18;    // Set as output
-	/* End of LED initialization */
-
-	/* PL011 UART initialization and print char */
-
-	int i;
-
-    // udelay(1500);
-    for (i = 0; i < 112500; i++)
-        asm volatile ("nop");
-
-    PL011_CR = 0;
-
-    // Configure GPIO Pins on pi
-    GPFSEL1 &= ~((7 << 12) | (7 << 15));    /* GPIO14 & 15: alt0  */
-    GPFSEL1 |= (4 << 12) | (4 << 15);
-
-    /* Disable pull-up/down.  */
-    GPPUD = 0;
-
-    for (i = 0; i < 150; i++)
-        asm volatile ("nop");
-
-    GPPUDCLK0 = (1 << 14) | (1 << 15);
-
-    for (i = 0; i < 150; i++)
-        asm volatile ("nop");
-
-	GPPUDCLK0 = 0;
-	// end of UART GPIO config
-	
-	// PL011 config
-	while (PL011_FR & (1 << 3))
-        ;
-    PL011_LCRH &= ~(1 << 4);
-
-    PL011_IBRD = _PL011_BAUD_INT(115200);
-    PL011_FBRD = _PL011_BAUD_FRAC(115200);
-
-    PL011_LCRH = 3 << 5;
-
-    PL011_CR = (1 << 9) | (1 << 8) | (1 << 0);
-
-    PL011_LCRH |= (1 << 4);	
-	// end of PL011 config
-	
-	char str[] = "Bye, World!\r\n";
-	
-	for(i = 0; i < 13; i++)
-	{
-		// print char
-		while (PL011_FR & (1 << 5))
-        	;
-    	PL011_DR = str[i];
-	}	
-
-	// end of printing char
-	
-	GPSET0 = 1 << 16;	// turn on led
-
-	/* End of UART initialization */
-
+	init_led();
 	/* Platform-specific initialization  */
 	platforminit();
-	kprintf("Hello Xinu W3rld!\r\n");
-	/* General initialization  */
-	// sysinit();
 
+
+	/* General initialization  */
+	sysinit();
+	
+	led_on();
+	
+	kprintf("Hello Xinu W3rld!\r\n");
+	print_os_info();
 	/* Enable interrupts  */
 	enable();
 
@@ -244,11 +186,13 @@ static int sysinit(void)
 	thrcurrent = NULLTHREAD;
 
 	/* Initialize semaphores */
+#if 0	
 	for (i = 0; i < NSEM; i++)
 	{
 		semtab[i].state = SFREE;
 		semtab[i].queue = queinit();
 	}
+#endif
 
 	/* Initialize monitors */
 	for (i = 0; i < NMON; i++)
@@ -263,7 +207,7 @@ static int sysinit(void)
 	}
 
 	/* initialize thread ready list */
-	readylist = queinit();
+//	readylist = queinit();
 
 #if SB_BUS
 	backplaneInit(NULL);
@@ -271,7 +215,7 @@ static int sysinit(void)
 
 #if RTCLOCK
 	/* initialize real time clock */
-	clkinit();
+//	clkinit();
 #endif                          /* RTCLOCK */
 
 #ifdef UHEAP_SIZE
@@ -302,7 +246,7 @@ static int sysinit(void)
 
 #if NMAILBOX
 	/* intialize mailboxes */
-	mailboxInit();
+//	mailboxInit();
 #endif
 
 #if NDEVS
