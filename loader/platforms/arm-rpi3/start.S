@@ -149,13 +149,14 @@ bssloopa:
 //	blo bssloopb	/* if still below, go backwards and loop */
 
 	/* Put the null thread's stack directly after the kernel image.  */
-	add sp, x1, #NULLSTK
+	  add sp, x1, #NULLSTK
 
 	/* The remaining memory available to the ARM will be Xinu's "memheap"
 	 * region, which is used for dynamic memory allocation.  Set its
 	 * starting address.  */
-	ldr x0, =memheap
-//	str x31, [x0]
+	  ldr x0, =memheap
+    mov x1, sp
+    str x1, [x0]
 
 	/* Initialize the Raspberry Pi graphics subsystem.  */
 	/* bl screenInit */
