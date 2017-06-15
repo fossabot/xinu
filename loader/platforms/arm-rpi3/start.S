@@ -135,21 +135,25 @@ reset_handler:
  */
 
 	/* Clear the .bss section of the kernel.  */
-/*	ldr x0, =_bss
+	ldr x0, =_bss
 	ldr x1, =_end
-	mov x2, #0
-	mov x3, #0
-	mov x4, #0
-	mov x5, #0
-	b bssloopa
+  	mov x2, #0
+  	b bssloopa
 bssloopb:
-	stmia x0!, {x2-x5}
+  	str x2, [x0, 8]
+  	str x2, [x0, 16]
+  	str x2, [x0, 24]
+  	str x2, [x0, 32]
+  	add x0, x0, 32
+
 bssloopa:
-*///	cmp x0, x1 	/* check that we still haven't hit the end of bss yet */
-//	blo bssloopb	/* if still below, go backwards and loop */
+	cmp x0, x1 	/* check that we still haven't hit the end of bss yet */
+	b.lo bssloopb	/* if still below, go backwards and loop */
+
+
 
 	/* Put the null thread's stack directly after the kernel image.  */
-	  add sp, x1, #NULLSTK
+	add sp, x1, #NULLSTK
 
 	/* The remaining memory available to the ARM will be Xinu's "memheap"
 	 * region, which is used for dynamic memory allocation.  Set its

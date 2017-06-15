@@ -83,9 +83,9 @@ struct platform platform;       /* Platform specific configuration     */
 #define PL011_LCRH  (*(volatile unsigned *)(PL011_BASE + 0x2C)) /* Line Control Register*/
 #define PL011_CR    (*(volatile unsigned *)(PL011_BASE + 0x30)) /* Control register */
 
-#define UART_CLK    48000000
-#define PL011_BAUD_INT(x)   (UART_CLK / (16 * (x)))
-#define PL011_BAUD_FRAC(x)  (int)((((UART_CLK / (16.0 * (x)))-PL011_BAUD_INT(x))*64.0)+0.5)
+#define _UART_CLK    48000000
+#define _PL011_BAUD_INT(x)   (_UART_CLK / (16 * (x)))
+#define _PL011_BAUD_FRAC(x)  (int)((((_UART_CLK / (16.0 * (x)))-_PL011_BAUD_INT(x))*64.0)+0.5)
 
 void init_led(void)
 {
@@ -121,7 +121,6 @@ void nulluser(void)
 	/* GPIO LED initialization and turn on */
 	GPFSEL1 &= ~(7 << 18); // GPIO Pin 16
     GPFSEL1 |= 1 << 18;    // Set as output
-	GPSET0 = 1 << 16;
 	/* End of LED initialization */
 
 	/* PL011 UART initialization and print char */
@@ -157,8 +156,8 @@ void nulluser(void)
         ;
     PL011_LCRH &= ~(1 << 4);
 
-    PL011_IBRD = PL011_BAUD_INT(115200);
-    PL011_FBRD = PL011_BAUD_FRAC(115200);
+    PL011_IBRD = _PL011_BAUD_INT(115200);
+    PL011_FBRD = _PL011_BAUD_FRAC(115200);
 
     PL011_LCRH = 3 << 5;
 
@@ -167,11 +166,19 @@ void nulluser(void)
     PL011_LCRH |= (1 << 4);	
 	// end of PL011 config
 	
-	// print char
-	while (PL011_FR & (1 << 5))
-        ;
-    PL011_DR = 'H';
+	char str[] = "Bye, World!\r\n";
+	
+	for(i = 0; i < 13; i++)
+	{
+		// print char
+		while (PL011_FR & (1 << 5))
+        	;
+    	PL011_DR = str[i];
+	}	
+
 	// end of printing char
+	
+	GPSET0 = 1 << 16;	// turn on led
 
 	/* End of UART initialization */
 
