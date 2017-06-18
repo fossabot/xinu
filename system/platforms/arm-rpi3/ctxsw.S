@@ -6,7 +6,7 @@
  */
 /* Embedded XINU, Copyright (C) 2013.  All rights reserved. */
 
-#include <arm.h>
+#include <arm64.h>
 
 .text
         .align 4
@@ -61,7 +61,6 @@ ctxsw:
     str x28, [x0, #PREG_X28*8]
     str x29, [x0, #PREG_FP*8]
     str x30, [x0, #PREG_LR*8]
-    str x30, [x0, #PREG_PC*8]
     
 /*Load registers from respective places in stack.  Using x1 and x2, so these need to be pushed onto stack.*/
 /*Program counter must be loaded last, since program will jump.  In this case, branching is same as loading program counter*/
@@ -96,16 +95,16 @@ ctxsw:
     ldr x29, [x1, #PREG_FP*8]
     ldr x30, [x1, #PREG_LR*8]
     
-    /*Push x1, x2, and pc onto the stack, then load into proper registers from there*/
+    /*Push x1, x2 onto the stack, then load into proper registers from there.*/
+    /*Could probably just load into x1 and x2 normally, but not sure if there will*/
+    /*be issues using x1 to calculate an offset that will be stored in x1*/
     ldr x2, [x1, #PREG_X2*8] 
     str x2, [sp, #-8]
     ldr x2, [x1, #PREG_X1*8]
     str x2, [sp, #-16]
-    ldr x2, [x1, #PREG_PC*8]
-    str x2, [sp, #-24]
     ldr x2, [sp, #-8]
     ldr x1, [sp, #-16]
-    ldr pc, [sp, #-24]
+    ret
 
 
         .end ctxsw
