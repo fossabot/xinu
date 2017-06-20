@@ -16,7 +16,7 @@
 
 extern void main(int, char *);
 
-int testmain(int argc, char **argv)
+int testmain()
 {
     int i = 0;
     kprintf("Hello XINU World!\r\n");
