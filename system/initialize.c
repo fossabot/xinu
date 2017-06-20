@@ -129,6 +129,8 @@ void nulluser(void)
 	led_on();
 	
 	kprintf("Hello Xinu W3rld!\r\n");
+	testmain();
+	
 	/* Enable interrupts  */
 	enable();
 
