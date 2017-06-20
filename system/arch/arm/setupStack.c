@@ -41,6 +41,7 @@ void *setupStack(void *stackaddr, void *procaddr,
         --saddr;
     }
 
+
     /* Construct the context record for the new thread.  */
 
     saddr -= CONTEXT_WORDS;
@@ -51,10 +52,12 @@ void *setupStack(void *stackaddr, void *procaddr,
         saddr[i] = va_arg(ap, ulong);
     }
 
+	
     for (; i < CONTEXT_WORDS - 3; i++)
     {
         saddr[i] = 0;
     }
+    
 
     /* Control bits of program status register
      * (SYS mode, IRQs initially enabled) */

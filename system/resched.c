@@ -27,6 +27,8 @@ int resched(void)
     struct thrent *throld;      /* old thread entry */
     struct thrent *thrnew;      /* new thread entry */
 
+ 
+
     if (resdefer > 0)
     {                           /* if deferred, increase count & return */
         resdefer++;
@@ -36,6 +38,7 @@ int resched(void)
     throld = &thrtab[thrcurrent];
 
     throld->intmask = disable();
+    
 
     if (THRCURR == throld->state)
     {
@@ -55,7 +58,10 @@ int resched(void)
 
     /* change address space identifier to thread id */
     asid = thrcurrent & 0xff;
+
+    kprintf("b4 ctxsw");
     ctxsw(&throld->stkptr, &thrnew->stkptr, asid);
+    kprintf("after ctxsw");
 
     /* old thread returns here when resumed */
     restore(throld->intmask);

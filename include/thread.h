@@ -36,6 +36,7 @@
 
 /* thread initialization constants */
 #define INITSTK     65536       /**< initial thread stack size          */
+#define INIT64STK   131072      /**< initial thread stack size for v8   */
 #define INITPRIO    20          /**< initial thread priority            */
 #define MINSTK      128         /**< minimum thread stack size          */
 #ifdef JTAG_DEBUG

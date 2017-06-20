@@ -1,5 +1,5 @@
-#ifndef  _ARM_H_
-#define  _ARM_H_
+#ifndef  _ARM64_H_
+#define  _ARM64_H_
 
 /* Definitions of mode bits in the ARM program status register.  See: A2.2
  * "Processor Modes" of the ARM Architecture Reference Manual; also A2.5.7 "The

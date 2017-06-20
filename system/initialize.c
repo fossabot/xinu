@@ -208,7 +208,7 @@ static int sysinit(void)
 	}
 
 	/* initialize thread ready list */
-//	readylist = queinit();
+	readylist = queinit();
 
 #if SB_BUS
 	backplaneInit(NULL);

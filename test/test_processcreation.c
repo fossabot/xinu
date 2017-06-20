@@ -14,10 +14,12 @@
 
 
 #include <thread.h>
+#include <arm.h>
 
 extern void main(int, char *);
 
-int testmain()
+
+int testproc()
 {
     int i = 0;
     kprintf("Hello XINU World!\r\n");
@@ -31,6 +33,24 @@ int testmain()
     }
     return 0;
 }
+void testmain()
+{
+	int x = 0;
+	for (x = 0; x < 10; x++)
+	{
+		kprintf("Getting ready to ready process %d\r\n", x);
+		create((void *) testproc, INIT64STK, 0, "NAME", 0, NULL);
+		kprintf("Done readying process %d\r\n", x);
+	}
+
+	kprintf("Getting ready to resched");
+	while(1)
+	{
+		kprintf("Rescheding");
+		resched();
+	}
+}
+
 /*
 void testbigargs(int a, int b, int c, int d, int e, int f, int g, int h, int i)
 {
@@ -89,7 +109,7 @@ void printpcb(int pid)
 {
     int c, pid;
 
-    kprintf("0) Test creation of one process\r\n");
+1431116693    kprintf("0) Test creation of one process\r\n");
     kprintf("1) Test passing of many args\r\n");
     kprintf("2) Run 50 processes, resched, run 50 more, and see if anything breaks\r\n");
     kprintf("3) Create three processes and run them\r\n");

@@ -28,7 +28,7 @@ static int thrnew(void);
  *      arguments to pass to thread procedure
  * @return
  *      the new thread's thread id, or ::SYSERR if a new thread could not be
- *      created (not enough memory or thread entries).
+ *     @ created (not enough memory or thread entries).
  */
 tid_typ create(void *procaddr, uint ssize, int priority,
                const char *name, int nargs, ...)
@@ -38,21 +38,27 @@ tid_typ create(void *procaddr, uint ssize, int priority,
     tid_typ tid;                /* new thread ID                       */
     struct thrent *thrptr;      /* pointer to new thread control block */
     va_list ap;                 /* list of thread arguments            */
-
+    kprintf("Section 1\r\n");
     im = disable();
+    kprintf("Section 2\r\n");
 
     if (ssize < MINSTK)
     {
         ssize = MINSTK;
     }
+    kprintf("Section 3\r\n");
 
     /* Allocate new stack.  */
+
     saddr = stkget(ssize);
+    /* saddr is 134217724.  Is that wrong?  Should also look into stkget to see what is does.  Ssize may also be wrong (it's set to INIT64STK which is initialized in thread.h) */
+    kprintf("Stack address %d", saddr);
     if (SYSERR == (int)saddr)
     {
         restore(im);
         return SYSERR;
     }
+    kprintf("Section 4\r\n");
 
     /* Allocate new thread ID.  */
     tid = thrnew();
@@ -62,10 +68,12 @@ tid_typ create(void *procaddr, uint ssize, int priority,
         restore(im);
         return SYSERR;
     }
+    kprintf("Section 5\r\n");
 
     /* Set up thread table entry for new thread.  */
     thrcount++;
     thrptr = &thrtab[tid];
+    kprintf("Section 6\r\n");
 
     thrptr->state = THRSUSP;
     thrptr->prio = priority;
@@ -76,6 +84,7 @@ tid_typ create(void *procaddr, uint ssize, int priority,
     thrptr->hasmsg = FALSE;
     thrptr->memlist.next = NULL;
     thrptr->memlist.length = 0;
+    kprintf("Section 7\r\n");
 
     /* Set up default file descriptors.  */
     //thrptr->fdesc[0] = CONSOLE; /* stdin  is console */
@@ -85,11 +94,15 @@ tid_typ create(void *procaddr, uint ssize, int priority,
     /* Set up new thread's stack with context record and arguments.
      * Architecture-specific.  */
     va_start(ap, nargs);
+    kprintf("s7.5\r\n");
+    int i;
     thrptr->stkptr = setupStack(saddr, procaddr, INITRET, nargs, ap);
     va_end(ap);
+    kprintf("Section 8\r\n");
 
     /* Restore interrupts and return new thread TID.  */
     restore(im);
+    kprintf("Section 9\r\n");
     return tid;
 }
 
