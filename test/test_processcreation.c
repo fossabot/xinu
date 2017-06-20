@@ -12,7 +12,8 @@
  */
 /* Embedded XINU, Copyright (C) 2007.  All rights reserved. */
 
-#include <xinu.h>
+
+#include <thread.h>
 
 extern void main(int, char *);
 
@@ -23,14 +24,14 @@ int testmain()
 
     for (i = 0; i < 10; i++)
     {
-        kprintf("This is process %d\r\n", currpid);
+        kprintf("This is process %d\r\n", thrcurrent);
 
         /* Uncomment the resched() line for cooperative scheduling. */
         resched();
     }
     return 0;
 }
-
+/*
 void testbigargs(int a, int b, int c, int d, int e, int f, int g, int h, int i)
 {
     kprintf("Testing bigargs...\r\n");
@@ -48,12 +49,12 @@ void testbigargs(int a, int b, int c, int d, int e, int f, int g, int h, int i)
 void printpcb(int pid)
 {
     pcb *ppcb = NULL;
-
+*/
     /* Using the process ID, access it in the PCB table. */
-    ppcb = &proctab[pid];
+  //  ppcb = &proctab[pid];
 
     /* Printing PCB */
-    kprintf("Process name                 : %s \r\n", ppcb->name);
+/* kprintf("Process name                 : %s \r\n", ppcb->name);
 
     switch (ppcb->state)
     {
@@ -73,18 +74,18 @@ void printpcb(int pid)
         kprintf("ERROR: Process state not correctly set!\r\n");
         break;
     }
-
+*/
     /* Print PCB contents and registers */
-    kprintf("Base of run time stack    : 0x%08X \r\n", ppcb->stkbase);
+/*    kprintf("Base of run time stack    : 0x%08X \r\n", ppcb->stkbase);
     kprintf("Stack pointer of process  : 0x%08X \r\n",
             ppcb->regs[PREG_SP]);
     kprintf("Stack length of process   : %8u \r\n", ppcb->stklen);
-}
+}*/
 
 /**
  * testcases - called after initialization completes to test things.
  */
-void testcases(void)
+/*void testcases(void)
 {
     int c, pid;
 
@@ -156,4 +157,4 @@ void testcases(void)
 
     kprintf("\r\n===TEST END===\r\n");
     return;
-}
+}*/
