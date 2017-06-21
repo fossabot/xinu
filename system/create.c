@@ -98,7 +98,7 @@ tid_typ create(void *procaddr, uint ssize, int priority,
     va_start(ap, nargs);
     kprintf("Section 7.5 (after descriptors are set up)\r\n");
     int i;
-    thrptr->stkptr = setupStack(&saddr, &procaddr, &INITRET, &nargs, ap);
+    thrptr->stkptr = setupStack(saddr, procaddr, INITRET, nargs, ap);
     va_end(ap);
     kprintf("Section 8 (after setupstack called)\r\n");
 

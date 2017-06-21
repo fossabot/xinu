@@ -57,7 +57,7 @@
 #define PREG_LR     30          /* Link register                                 */
 
 
-#define PREGS       16          /* Regs stored by context switches               */
+#define PREGS       31          /* Regs stored by context switches               */
 
 
 #endif                          /* _ARM_H_ */
