@@ -7,7 +7,7 @@
 #include <arm64.h>
 
 /* Length of ARM context record in words (includes r0-r11, cpsr, lr, pc).  */
-#define CONTEXT_WORDS 29
+#define CONTEXT_WORDS 31
 
 /* The standard ARMv8 calling convention passes first eight arguments in x0-x7; the
  * rest spill onto the stack.  */
@@ -43,7 +43,7 @@ void *setupStack(void *stackaddr, void *procaddr,
      * after the new thread pops off the context record.  */
     if ((ulong)saddr & 0x8)
     {
-	kprintf("enter stack align");
+	kprintf("enter stack align\r\n");
         --saddr;
     }
 

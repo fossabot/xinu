@@ -1123,25 +1123,26 @@ Linker script and memory map
                 0x0000000000082758                strlen
  *(.rodata .rodata.*)
  .rodata.str1.1
-                0x0000000000082774       0xa4 ../system/platforms/arm-rpi3/setupStack.o
+                0x0000000000082774       0xa6 ../system/platforms/arm-rpi3/setupStack.o
  .rodata.str1.1
-                0x0000000000082818       0x17 ../system/platforms/arm-rpi3/platforminit.o
+                0x000000000008281a       0x17 ../system/platforms/arm-rpi3/platforminit.o
  .rodata.str1.1
-                0x000000000008282f       0x21 ../system/initialize.o
+                0x0000000000082831       0x21 ../system/initialize.o
  .rodata.str1.1
-                0x0000000000082850      0x16c ../system/create.o
- .rodata        0x00000000000829bc        0x7 ../system/kill.o
+                0x0000000000082852      0x16c ../system/create.o
+ *fill*         0x00000000000829be        0x2 
+ .rodata        0x00000000000829c0        0x7 ../system/kill.o
  .rodata.str1.1
-                0x00000000000829c3       0x19 ../system/resched.o
+                0x00000000000829c7       0x19 ../system/resched.o
  .rodata.str1.1
-                0x00000000000829dc       0x2b ../system/xdone.o
- *fill*         0x0000000000082a07        0x1 
- .rodata        0x0000000000082a08        0x7 ../device/uart-pl011/../uart/uartControl.o
- *fill*         0x0000000000082a0f        0x1 
- .rodata        0x0000000000082a10        0x4 ../device/tty/ttyControl.o
+                0x00000000000829e0       0x2b ../system/xdone.o
+ *fill*         0x0000000000082a0b        0x1 
+ .rodata        0x0000000000082a0c        0x7 ../device/uart-pl011/../uart/uartControl.o
+ *fill*         0x0000000000082a13        0x1 
+ .rodata        0x0000000000082a14        0x4 ../device/tty/ttyControl.o
  .rodata.str1.1
-                0x0000000000082a14       0xa5 ../test/test_processcreation.o
- *fill*         0x0000000000082ab9        0x7 
+                0x0000000000082a18       0xa5 ../test/test_processcreation.o
+ *fill*         0x0000000000082abd        0x3 
  .rodata        0x0000000000082ac0       0xe0 ../system/conf.o
                 0x0000000000082ac0                devtab
  .rodata.str1.1
