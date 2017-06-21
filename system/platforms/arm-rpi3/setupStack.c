@@ -4,7 +4,7 @@
 /* Embedded Xinu, Copyright (C) 2013.  All rights reserved. */
 
 #include <platform.h>
-#include <arm.h>
+#include <arm64.h>
 
 /* Length of ARM context record in words (includes r0-r11, cpsr, lr, pc).  */
 #define CONTEXT_WORDS 29
@@ -37,12 +37,17 @@ void *setupStack(void *stackaddr, void *procaddr,
     // this is zero.
     kprintf("reg_nargs is set to: %d\r\n", reg_nargs);
 
+
+    kprintf("saddr b4 align: %d\r\n", saddr);
     /* Possibly skip a word to ensure the stack is aligned on 8-byte boundary
      * after the new thread pops off the context record.  */
     if ((ulong)saddr & 0x8)
     {
+	kprintf("enter stack align");
         --saddr;
     }
+
+    kprintf("saddr after stack align: %d\r\n", saddr);
 
     /* Construct the context record for the new thread.  */
     saddr -= CONTEXT_WORDS;
