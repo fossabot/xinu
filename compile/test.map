@@ -987,233 +987,232 @@ Linker script and memory map
                 0x0000000000080000                _start
                 0x0000000000080040                . = ALIGN (0x40)
 
-.text           0x0000000000080040     0x2e48
+.text           0x0000000000080040     0x2d48
  *(.txt .text.*)
  .text.setupStack
-                0x0000000000080040      0x1d8 ../system/platforms/arm-rpi3/setupStack.o
+                0x0000000000080040      0x104 ../system/platforms/arm-rpi3/setupStack.o
                 0x0000000000080040                setupStack
  .text.bcm2835_power_init
-                0x0000000000080218       0x28 ../system/platforms/arm-rpi3/bcm2835_power.o
-                0x0000000000080218                bcm2835_power_init
+                0x0000000000080144       0x28 ../system/platforms/arm-rpi3/bcm2835_power.o
+                0x0000000000080144                bcm2835_power_init
  .text.platforminit
-                0x0000000000080240      0x114 ../system/platforms/arm-rpi3/platforminit.o
-                0x0000000000080240                platforminit
+                0x000000000008016c      0x114 ../system/platforms/arm-rpi3/platforminit.o
+                0x000000000008016c                platforminit
  .text.clkcount
-                0x0000000000080354       0x30 ../system/platforms/arm-rpi3/timer.o
-                0x0000000000080354                clkcount
+                0x0000000000080280       0x30 ../system/platforms/arm-rpi3/timer.o
+                0x0000000000080280                clkcount
  .text.init_led
-                0x0000000000080384       0x24 ../system/initialize.o
-                0x0000000000080384                init_led
+                0x00000000000802b0       0x24 ../system/initialize.o
+                0x00000000000802b0                init_led
  .text.nulluser
-                0x00000000000803a8      0x144 ../system/initialize.o
-                0x00000000000803a8                nulluser
- .text.enqueue  0x00000000000804ec       0x74 ../system/queue.o
-                0x00000000000804ec                enqueue
- .text.dequeue  0x0000000000080560       0x9c ../system/queue.o
-                0x0000000000080560                dequeue
- .text.create   0x00000000000805fc      0x2ac ../system/create.o
-                0x00000000000805fc                create
- .text.kill     0x00000000000808a8      0x170 ../system/kill.o
-                0x00000000000808a8                kill
- .text.ready    0x0000000000080a18       0x7c ../system/ready.o
-                0x0000000000080a18                ready
- .text.resched  0x0000000000080a94      0x150 ../system/resched.o
-                0x0000000000080a94                resched
- .text.getitem  0x0000000000080be4       0x3c ../system/getitem.o
-                0x0000000000080be4                getitem
+                0x00000000000802d4      0x144 ../system/initialize.o
+                0x00000000000802d4                nulluser
+ .text.enqueue  0x0000000000080418       0x74 ../system/queue.o
+                0x0000000000080418                enqueue
+ .text.dequeue  0x000000000008048c       0x9c ../system/queue.o
+                0x000000000008048c                dequeue
+ .text.create   0x0000000000080528      0x2ac ../system/create.o
+                0x0000000000080528                create
+ .text.kill     0x00000000000807d4      0x170 ../system/kill.o
+                0x00000000000807d4                kill
+ .text.ready    0x0000000000080944       0x7c ../system/ready.o
+                0x0000000000080944                ready
+ .text.resched  0x00000000000809c0      0x150 ../system/resched.o
+                0x00000000000809c0                resched
+ .text.getitem  0x0000000000080b10       0x3c ../system/getitem.o
+                0x0000000000080b10                getitem
  .text.getfirst
-                0x0000000000080c20       0x44 ../system/getitem.o
-                0x0000000000080c20                getfirst
- .text.queinit  0x0000000000080c64       0x68 ../system/queinit.o
-                0x0000000000080c64                queinit
- .text.insert   0x0000000000080ccc       0xbc ../system/insert.o
-                0x0000000000080ccc                insert
- .text.gettid   0x0000000000080d88        0xc ../system/gettid.o
-                0x0000000000080d88                gettid
- .text.xdone    0x0000000000080d94       0x20 ../system/xdone.o
-                0x0000000000080d94                xdone
- .text.userret  0x0000000000080db4       0x14 ../system/userret.o
-                0x0000000000080db4                userret
- .text.udelay   0x0000000000080dc8       0x70 ../system/udelay.o
-                0x0000000000080dc8                udelay
- .text.unsleep  0x0000000000080e38       0xb4 ../system/unsleep.o
-                0x0000000000080e38                unsleep
- .text.signaln  0x0000000000080eec       0xa4 ../system/signaln.o
-                0x0000000000080eec                signaln
- .text.wait     0x0000000000080f90       0xb4 ../system/wait.o
-                0x0000000000080f90                wait
- .text.memfree  0x0000000000081044      0x124 ../system/memfree.o
-                0x0000000000081044                memfree
- .text.stkget   0x0000000000081168       0xb8 ../system/stkget.o
-                0x0000000000081168                stkget
- .text.send     0x0000000000081220       0xb4 ../system/send.o
-                0x0000000000081220                send
- .text.ioerr    0x00000000000812d4        0x8 ../system/ioerr.o
-                0x00000000000812d4                ioerr
- .text.ionull   0x00000000000812dc        0x8 ../system/ionull.o
-                0x00000000000812dc                ionull
- .text.kputc    0x00000000000812e4       0x48 ../device/uart-pl011/kputc.o
-                0x00000000000812e4                kputc
+                0x0000000000080b4c       0x44 ../system/getitem.o
+                0x0000000000080b4c                getfirst
+ .text.queinit  0x0000000000080b90       0x68 ../system/queinit.o
+                0x0000000000080b90                queinit
+ .text.insert   0x0000000000080bf8       0xbc ../system/insert.o
+                0x0000000000080bf8                insert
+ .text.gettid   0x0000000000080cb4        0xc ../system/gettid.o
+                0x0000000000080cb4                gettid
+ .text.xdone    0x0000000000080cc0       0x20 ../system/xdone.o
+                0x0000000000080cc0                xdone
+ .text.userret  0x0000000000080ce0       0x14 ../system/userret.o
+                0x0000000000080ce0                userret
+ .text.udelay   0x0000000000080cf4       0x70 ../system/udelay.o
+                0x0000000000080cf4                udelay
+ .text.unsleep  0x0000000000080d64       0xb4 ../system/unsleep.o
+                0x0000000000080d64                unsleep
+ .text.signaln  0x0000000000080e18       0xa4 ../system/signaln.o
+                0x0000000000080e18                signaln
+ .text.wait     0x0000000000080ebc       0xb4 ../system/wait.o
+                0x0000000000080ebc                wait
+ .text.memfree  0x0000000000080f70      0x124 ../system/memfree.o
+                0x0000000000080f70                memfree
+ .text.stkget   0x0000000000081094       0xb8 ../system/stkget.o
+                0x0000000000081094                stkget
+ .text.send     0x000000000008114c       0xb4 ../system/send.o
+                0x000000000008114c                send
+ .text.ioerr    0x0000000000081200        0x8 ../system/ioerr.o
+                0x0000000000081200                ioerr
+ .text.ionull   0x0000000000081208        0x8 ../system/ionull.o
+                0x0000000000081208                ionull
+ .text.kputc    0x0000000000081210       0x48 ../device/uart-pl011/kputc.o
+                0x0000000000081210                kputc
  .text.uartControl
-                0x000000000008132c       0xac ../device/uart-pl011/../uart/uartControl.o
-                0x000000000008132c                uartControl
+                0x0000000000081258       0xac ../device/uart-pl011/../uart/uartControl.o
+                0x0000000000081258                uartControl
  .text.uartGetc
-                0x00000000000813d8       0x28 ../device/uart-pl011/../uart/uartGetc.o
-                0x00000000000813d8                uartGetc
+                0x0000000000081304       0x28 ../device/uart-pl011/../uart/uartGetc.o
+                0x0000000000081304                uartGetc
  .text.uartHwInit
-                0x0000000000081400       0xa4 ../device/uart-pl011/uartHwInit.o
-                0x0000000000081400                uartHwInit
+                0x000000000008132c       0xa4 ../device/uart-pl011/uartHwInit.o
+                0x000000000008132c                uartHwInit
  .text.uartHwPutc
-                0x00000000000814a4        0xc ../device/uart-pl011/uartHwPutc.o
-                0x00000000000814a4                uartHwPutc
+                0x00000000000813d0        0xc ../device/uart-pl011/uartHwPutc.o
+                0x00000000000813d0                uartHwPutc
  .text.uartInterrupt
-                0x00000000000814b0      0x160 ../device/uart-pl011/uartInterrupt.o
-                0x00000000000814b0                uartInterrupt
+                0x00000000000813dc      0x160 ../device/uart-pl011/uartInterrupt.o
+                0x00000000000813dc                uartInterrupt
  .text.uartPutc
-                0x0000000000081610       0x30 ../device/uart-pl011/../uart/uartPutc.o
-                0x0000000000081610                uartPutc
+                0x000000000008153c       0x30 ../device/uart-pl011/../uart/uartPutc.o
+                0x000000000008153c                uartPutc
  .text.uartRead
-                0x0000000000081640       0xdc ../device/uart-pl011/../uart/uartRead.o
-                0x0000000000081640                uartRead
+                0x000000000008156c       0xdc ../device/uart-pl011/../uart/uartRead.o
+                0x000000000008156c                uartRead
  .text.uartWrite
-                0x000000000008171c       0xf4 ../device/uart-pl011/../uart/uartWrite.o
-                0x000000000008171c                uartWrite
- .text.kprintf  0x0000000000081810       0x78 ../device/uart-pl011/../uart/kprintf.o
-                0x0000000000081810                kprintf
+                0x0000000000081648       0xf4 ../device/uart-pl011/../uart/uartWrite.o
+                0x0000000000081648                uartWrite
+ .text.kprintf  0x000000000008173c       0x78 ../device/uart-pl011/../uart/kprintf.o
+                0x000000000008173c                kprintf
  .text.kvprintf
-                0x0000000000081888       0x6c ../device/uart-pl011/../uart/kvprintf.o
-                0x0000000000081888                kvprintf
+                0x00000000000817b4       0x6c ../device/uart-pl011/../uart/kvprintf.o
+                0x00000000000817b4                kvprintf
  .text.ttyControl
-                0x00000000000818f4       0xac ../device/tty/ttyControl.o
-                0x00000000000818f4                ttyControl
- .text.ttyOpen  0x00000000000819a0       0xbc ../device/tty/ttyOpen.o
-                0x00000000000819a0                ttyOpen
- .text.ttyEcho  0x0000000000081a5c       0x64 ../device/tty/ttyRead.o
- .text.ttyRead  0x0000000000081ac0      0x2c0 ../device/tty/ttyRead.o
-                0x0000000000081ac0                ttyRead
+                0x0000000000081820       0xac ../device/tty/ttyControl.o
+                0x0000000000081820                ttyControl
+ .text.ttyOpen  0x00000000000818cc       0xbc ../device/tty/ttyOpen.o
+                0x00000000000818cc                ttyOpen
+ .text.ttyEcho  0x0000000000081988       0x64 ../device/tty/ttyRead.o
+ .text.ttyRead  0x00000000000819ec      0x2c0 ../device/tty/ttyRead.o
+                0x00000000000819ec                ttyRead
  .text.ttyClose
-                0x0000000000081d80       0x4c ../device/tty/ttyClose.o
-                0x0000000000081d80                ttyClose
- .text.ttyGetc  0x0000000000081dcc       0x28 ../device/tty/ttyGetc.o
-                0x0000000000081dcc                ttyGetc
- .text.ttyInit  0x0000000000081df4       0x30 ../device/tty/ttyInit.o
-                0x0000000000081df4                ttyInit
- .text.ttyPutc  0x0000000000081e24       0x94 ../device/tty/ttyPutc.o
-                0x0000000000081e24                ttyPutc
+                0x0000000000081cac       0x4c ../device/tty/ttyClose.o
+                0x0000000000081cac                ttyClose
+ .text.ttyGetc  0x0000000000081cf8       0x28 ../device/tty/ttyGetc.o
+                0x0000000000081cf8                ttyGetc
+ .text.ttyInit  0x0000000000081d20       0x30 ../device/tty/ttyInit.o
+                0x0000000000081d20                ttyInit
+ .text.ttyPutc  0x0000000000081d50       0x94 ../device/tty/ttyPutc.o
+                0x0000000000081d50                ttyPutc
  .text.ttyWrite
-                0x0000000000081eb8       0x58 ../device/tty/ttyWrite.o
-                0x0000000000081eb8                ttyWrite
+                0x0000000000081de4       0x58 ../device/tty/ttyWrite.o
+                0x0000000000081de4                ttyWrite
  .text.testproc
-                0x0000000000081f10       0x5c ../test/test_processcreation.o
-                0x0000000000081f10                testproc
+                0x0000000000081e3c       0x5c ../test/test_processcreation.o
+                0x0000000000081e3c                testproc
  .text.testmain
-                0x0000000000081f6c       0x9c ../test/test_processcreation.o
-                0x0000000000081f6c                testmain
- .text.bzero    0x0000000000082008        0xc ../lib/libxc.a(bzero.o)
-                0x0000000000082008                bzero
- .text._doprnt  0x0000000000082014      0x6a4 ../lib/libxc.a(doprnt.o)
-                0x0000000000082014                _doprnt
- .text.memcpy   0x00000000000826b8       0x20 ../lib/libxc.a(memcpy.o)
-                0x00000000000826b8                memcpy
- .text.memset   0x00000000000826d8       0x20 ../lib/libxc.a(memset.o)
-                0x00000000000826d8                memset
- .text.strlcpy  0x00000000000826f8       0x60 ../lib/libxc.a(strlcpy.o)
-                0x00000000000826f8                strlcpy
- .text.strlen   0x0000000000082758       0x1c ../lib/libxc.a(strlen.o)
-                0x0000000000082758                strlen
+                0x0000000000081e98       0xa4 ../test/test_processcreation.o
+                0x0000000000081e98                testmain
+ .text.bzero    0x0000000000081f3c        0xc ../lib/libxc.a(bzero.o)
+                0x0000000000081f3c                bzero
+ .text._doprnt  0x0000000000081f48      0x6a4 ../lib/libxc.a(doprnt.o)
+                0x0000000000081f48                _doprnt
+ .text.memcpy   0x00000000000825ec       0x20 ../lib/libxc.a(memcpy.o)
+                0x00000000000825ec                memcpy
+ .text.memset   0x000000000008260c       0x20 ../lib/libxc.a(memset.o)
+                0x000000000008260c                memset
+ .text.strlcpy  0x000000000008262c       0x60 ../lib/libxc.a(strlcpy.o)
+                0x000000000008262c                strlcpy
+ .text.strlen   0x000000000008268c       0x1c ../lib/libxc.a(strlen.o)
+                0x000000000008268c                strlen
  *(.rodata .rodata.*)
  .rodata.str1.1
-                0x0000000000082774       0xa6 ../system/platforms/arm-rpi3/setupStack.o
+                0x00000000000826a8       0x75 ../system/platforms/arm-rpi3/setupStack.o
  .rodata.str1.1
-                0x000000000008281a       0x17 ../system/platforms/arm-rpi3/platforminit.o
+                0x000000000008271d       0x17 ../system/platforms/arm-rpi3/platforminit.o
  .rodata.str1.1
-                0x0000000000082831       0x21 ../system/initialize.o
+                0x0000000000082734       0x21 ../system/initialize.o
  .rodata.str1.1
-                0x0000000000082852      0x16c ../system/create.o
- *fill*         0x00000000000829be        0x2 
- .rodata        0x00000000000829c0        0x7 ../system/kill.o
+                0x0000000000082755      0x16c ../system/create.o
+ *fill*         0x00000000000828c1        0x3 
+ .rodata        0x00000000000828c4        0x7 ../system/kill.o
  .rodata.str1.1
-                0x00000000000829c7       0x19 ../system/resched.o
+                0x00000000000828cb       0x19 ../system/resched.o
  .rodata.str1.1
-                0x00000000000829e0       0x2b ../system/xdone.o
- *fill*         0x0000000000082a0b        0x1 
- .rodata        0x0000000000082a0c        0x7 ../device/uart-pl011/../uart/uartControl.o
- *fill*         0x0000000000082a13        0x1 
- .rodata        0x0000000000082a14        0x4 ../device/tty/ttyControl.o
+                0x00000000000828e4       0x2b ../system/xdone.o
+ *fill*         0x000000000008290f        0x1 
+ .rodata        0x0000000000082910        0x7 ../device/uart-pl011/../uart/uartControl.o
+ *fill*         0x0000000000082917        0x1 
+ .rodata        0x0000000000082918        0x4 ../device/tty/ttyControl.o
  .rodata.str1.1
-                0x0000000000082a18       0xa5 ../test/test_processcreation.o
- *fill*         0x0000000000082abd        0x3 
- .rodata        0x0000000000082ac0       0xe0 ../system/conf.o
-                0x0000000000082ac0                devtab
+                0x000000000008291c       0xa5 ../test/test_processcreation.o
+ *fill*         0x00000000000829c1        0x7 
+ .rodata        0x00000000000829c8       0xe0 ../system/conf.o
+                0x00000000000829c8                devtab
  .rodata.str1.1
-                0x0000000000082ba0       0x10 ../system/conf.o
- .rodata        0x0000000000082bb0      0x100 ../lib/libxc.a(ctype_.o)
-                0x0000000000082bb0                _ctype_
- .rodata        0x0000000000082cb0       0x31 ../lib/libxc.a(doprnt.o)
+                0x0000000000082aa8       0x10 ../system/conf.o
+ .rodata        0x0000000000082ab8      0x100 ../lib/libxc.a(ctype_.o)
+                0x0000000000082ab8                _ctype_
+ .rodata        0x0000000000082bb8       0x31 ../lib/libxc.a(doprnt.o)
  .rodata.str1.1
-                0x0000000000082ce1        0x7 ../lib/libxc.a(doprnt.o)
- .text          0x0000000000082ce8       0x70 ../loader/platforms/arm-rpi3/start.o
- *fill*         0x0000000000082d58        0x8 
- .text          0x0000000000082d60      0x10c ../system/platforms/arm-rpi3/ctxsw.o
-                0x0000000000082d60                ctxsw
- .text          0x0000000000082e6c        0x4 ../system/platforms/arm-rpi3/halt.o
-                0x0000000000082e6c                halt
- .text          0x0000000000082e70        0xc ../system/platforms/arm-rpi3/intutils.o
-                0x0000000000082e70                enable
-                0x0000000000082e74                disable
-                0x0000000000082e78                restore
- .text          0x0000000000082e7c        0x4 ../system/platforms/arm-rpi3/irq_handler.o
-                0x0000000000082e7c                irq_handler
- .text          0x0000000000082e80        0x4 ../system/platforms/arm-rpi3/memory_barrier.o
-                0x0000000000082e80                dmb
- .text          0x0000000000082e84        0x4 ../system/platforms/arm-rpi3/pause.o
-                0x0000000000082e84                pause
+                0x0000000000082be9        0x7 ../lib/libxc.a(doprnt.o)
+ .text          0x0000000000082bf0       0x70 ../loader/platforms/arm-rpi3/start.o
+ .text          0x0000000000082c60      0x10c ../system/platforms/arm-rpi3/ctxsw.o
+                0x0000000000082c60                ctxsw
+ .text          0x0000000000082d6c        0x4 ../system/platforms/arm-rpi3/halt.o
+                0x0000000000082d6c                halt
+ .text          0x0000000000082d70        0xc ../system/platforms/arm-rpi3/intutils.o
+                0x0000000000082d70                enable
+                0x0000000000082d74                disable
+                0x0000000000082d78                restore
+ .text          0x0000000000082d7c        0x4 ../system/platforms/arm-rpi3/irq_handler.o
+                0x0000000000082d7c                irq_handler
+ .text          0x0000000000082d80        0x4 ../system/platforms/arm-rpi3/memory_barrier.o
+                0x0000000000082d80                dmb
+ .text          0x0000000000082d84        0x4 ../system/platforms/arm-rpi3/pause.o
+                0x0000000000082d84                pause
 
-.iplt           0x0000000000082e88        0x0
- .iplt          0x0000000000082e88        0x0 ../loader/platforms/arm-rpi3/start.o
+.iplt           0x0000000000082d88        0x0
+ .iplt          0x0000000000082d88        0x0 ../loader/platforms/arm-rpi3/start.o
 
-.rela.dyn       0x0000000000082e88        0x0
- .rela.iplt     0x0000000000082e88        0x0 ../loader/platforms/arm-rpi3/start.o
-                0x0000000000082ec0                . = ALIGN (0x40)
+.rela.dyn       0x0000000000082d88        0x0
+ .rela.iplt     0x0000000000082d88        0x0 ../loader/platforms/arm-rpi3/start.o
+                0x0000000000082dc0                . = ALIGN (0x40)
 
-.data           0x0000000000082ec0        0xc
+.data           0x0000000000082dc0        0xc
  *(.data .data.*)
- .data          0x0000000000082ec0        0x8 ../system/platforms/arm-rpi3/platforminit.o
-                0x0000000000082ec0                atags_ptr
- .data          0x0000000000082ec8        0x4 ../system/queinit.o
+ .data          0x0000000000082dc0        0x8 ../system/platforms/arm-rpi3/platforminit.o
+                0x0000000000082dc0                atags_ptr
+ .data          0x0000000000082dc8        0x4 ../system/queinit.o
 
-.igot.plt       0x0000000000082ed0        0x0
- .igot.plt      0x0000000000082ed0        0x0 ../loader/platforms/arm-rpi3/start.o
-                0x0000000000082f00                . = ALIGN (0x40)
-                0x0000000000082f00                _bss = .
+.igot.plt       0x0000000000082dd0        0x0
+ .igot.plt      0x0000000000082dd0        0x0 ../loader/platforms/arm-rpi3/start.o
+                0x0000000000082e00                . = ALIGN (0x40)
+                0x0000000000082e00                _bss = .
 
-.bss            0x0000000000082f00     0x4ce8
+.bss            0x0000000000082e00     0x4ce8
  *(.bss .bss.*)
- .bss           0x0000000000082f00        0x4 ../system/platforms/arm-rpi3/bcm2835_power.o
- *fill*         0x0000000000082f04        0x4 
- .bss           0x0000000000082f08     0x3238 ../system/initialize.o
-                0x0000000000082f08                thrcount
-                0x0000000000082f10                memheap
-                0x0000000000082f18                platform
-                0x0000000000082f68                memlist
-                0x0000000000082f78                thrtab
-                0x0000000000085b38                thrcurrent
-                0x0000000000085b40                bfptab
-                0x0000000000085c80                readylist
-                0x0000000000085c88                cpuid
-                0x0000000000085c90                semtab
-                0x0000000000085c90                montab
- .bss           0x0000000000086140      0xe40 ../system/queue.o
-                0x0000000000086140                quetab
- .bss           0x0000000000086f80        0x4 ../system/create.o
- .bss           0x0000000000086f84        0x4 ../system/resched.o
-                0x0000000000086f84                resdefer
- .bss           0x0000000000086f88      0x848 ../device/uart-pl011/../uart/uartInit.o
-                0x0000000000086f88                uarttab
- .bss           0x00000000000877d0      0x418 ../device/tty/ttyInit.o
-                0x00000000000877d0                ttytab
-                0x0000000000087c00                . = ALIGN (0x40)
-                0x0000000000087c00                _end = .
+ .bss           0x0000000000082e00        0x4 ../system/platforms/arm-rpi3/bcm2835_power.o
+ *fill*         0x0000000000082e04        0x4 
+ .bss           0x0000000000082e08     0x3238 ../system/initialize.o
+                0x0000000000082e08                thrcount
+                0x0000000000082e10                memheap
+                0x0000000000082e18                platform
+                0x0000000000082e68                memlist
+                0x0000000000082e78                thrtab
+                0x0000000000085a38                thrcurrent
+                0x0000000000085a40                bfptab
+                0x0000000000085b80                readylist
+                0x0000000000085b88                cpuid
+                0x0000000000085b90                semtab
+                0x0000000000085b90                montab
+ .bss           0x0000000000086040      0xe40 ../system/queue.o
+                0x0000000000086040                quetab
+ .bss           0x0000000000086e80        0x4 ../system/create.o
+ .bss           0x0000000000086e84        0x4 ../system/resched.o
+                0x0000000000086e84                resdefer
+ .bss           0x0000000000086e88      0x848 ../device/uart-pl011/../uart/uartInit.o
+                0x0000000000086e88                uarttab
+ .bss           0x00000000000876d0      0x418 ../device/tty/ttyInit.o
+                0x00000000000876d0                ttytab
+                0x0000000000087b00                . = ALIGN (0x40)
+                0x0000000000087b00                _end = .
 
 /DISCARD/
  *(.comment .comment.* .note .note.*)

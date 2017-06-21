@@ -50,8 +50,8 @@ void *setupStack(void *stackaddr, void *procaddr,
     kprintf("saddr after stack align: %d\r\n", saddr);
 
     /* Construct the context record for the new thread.  */
-    saddr -= CONTEXT_WORDS;
-    saddr[0] = 0;
+    //saddr -= CONTEXT_WORDS;
+    //saddr[0] = 0;
 	
 
     /* Arguments passed in registers (part of context record)  */
@@ -61,31 +61,32 @@ void *setupStack(void *stackaddr, void *procaddr,
         saddr[i] = va_arg(ap, ulong);
     }
 
+    /*
 	kprintf("b4 ctx words loop\r\n");
     for (; i < CONTEXT_WORDS - 3; i++)
     {
         kprintf("saddr= %d\r\n", saddr); 
         saddr[i] = 0;
 	kprintf("Value of i: %d\r\n", i);
-    }
+    } */
     
 
     /* Control bits of program status register
      * (SYS mode, IRQs initially enabled) */
-    saddr[CONTEXT_WORDS - 3] = ARM_MODE_SYS | ARM_F_BIT;
+//    saddr[CONTEXT_WORDS - 3] = ARM_MODE_SYS | ARM_F_BIT;
 
     /* return address  */
-    saddr[CONTEXT_WORDS - 2] = (ulong)retaddr;
+//    saddr[CONTEXT_WORDS - 2] = (ulong)retaddr;
 
     /* program counter  */
-    saddr[CONTEXT_WORDS - 1] = (ulong)procaddr;
+//    saddr[CONTEXT_WORDS - 1] = (ulong)procaddr;
 
     /* Arguments spilled onto stack (not part of context record)  */
-    for (i = 0; i < spilled_nargs; i++)
+/*    for (i = 0; i < spilled_nargs; i++)
     {
         saddr[CONTEXT_WORDS + i] = va_arg(ap, ulong);
     }
-
+*/
     /* Return "top" of stack (lowest address).  */
     return saddr;
 }
