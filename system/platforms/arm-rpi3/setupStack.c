@@ -34,28 +34,32 @@ void *setupStack(void *stackaddr, void *procaddr,
         reg_nargs = nargs;
     }
 
-    kprintf("reg_nargs is set to %d", reg_nargs);
+    // this is zero.
+    kprintf("reg_nargs is set to: %d\r\n", reg_nargs);
 
     /* Possibly skip a word to ensure the stack is aligned on 8-byte boundary
      * after the new thread pops off the context record.  */
-    if ((ulong)saddr & 0x4)
+    if ((ulong)saddr & 0x8)
     {
         --saddr;
     }
 
     /* Construct the context record for the new thread.  */
     saddr -= CONTEXT_WORDS;
-//    saddr[0] = 0;
+    saddr[0] = 0;
+	
+
     /* Arguments passed in registers (part of context record)  */
     for (i = 0; i < reg_nargs; i++)
     {
-	kprintf("b4 va");
+	kprintf("in reg nargs loop\r\n");
         saddr[i] = va_arg(ap, ulong);
     }
 
-	kprintf("b4 ctx words loop");
+	kprintf("b4 ctx words loop\r\n");
     for (; i < CONTEXT_WORDS - 3; i++)
     {
+        kprintf("saddr= %d\r\n", saddr); 
         saddr[i] = 0;
 	kprintf("Value of i: %d\r\n", i);
     }

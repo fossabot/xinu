@@ -59,9 +59,9 @@ int resched(void)
     /* change address space identifier to thread id */
     asid = thrcurrent & 0xff;
 
-    kprintf("b4 ctxsw");
+    kprintf("b4 ctxsw\r\n");
     ctxsw(&throld->stkptr, &thrnew->stkptr, asid);
-    kprintf("after ctxsw");
+    kprintf("after ctxsw\r\n");
 
     /* old thread returns here when resumed */
     restore(throld->intmask);

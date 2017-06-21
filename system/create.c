@@ -38,7 +38,7 @@ tid_typ create(void *procaddr, uint ssize, int priority,
     tid_typ tid;                /* new thread ID                       */
     struct thrent *thrptr;      /* pointer to new thread control block */
     va_list ap;                 /* list of thread arguments            */
-    kprintf("Section 1\r\n");
+    kprintf("Section 1 - ssize= %d\r\n", ssize);
     im = disable();
     kprintf("Section 2\r\n");
 
@@ -46,13 +46,13 @@ tid_typ create(void *procaddr, uint ssize, int priority,
     {
         ssize = MINSTK;
     }
-    kprintf("Section 3\r\n");
+    kprintf("Section 3 (b4 stkget): saddr=%d\r\n", saddr);
 
     /* Allocate new stack.  */
-
     saddr = stkget(ssize);
-    /* saddr is 134217724.  Is that wrong?  Should also look into stkget to see what is does.  Ssize may also be wrong (it's set to INIT64STK which is initialized in thread.h) */
-    kprintf("Stack address %d", saddr);
+
+    /* saddr is 134217724 (128KB). Ssize is set to INIT64STK which is initialized in thread.h */
+    kprintf("Section 3.5 (after stkget): Stack value (saddr)= %d, Address ref= %d\n", saddr, &saddr);
     if (SYSERR == (int)saddr)
     {
         restore(im);
@@ -87,22 +87,24 @@ tid_typ create(void *procaddr, uint ssize, int priority,
     kprintf("Section 7\r\n");
 
     /* Set up default file descriptors.  */
-    //thrptr->fdesc[0] = CONSOLE; /* stdin  is console */
-    //thrptr->fdesc[1] = CONSOLE; /* stdout is console */
-    //thrptr->fdesc[2] = CONSOLE; /* stderr is console */
+    thrptr->fdesc[0] = CONSOLE; /* stdin  is console */
+    thrptr->fdesc[1] = CONSOLE; /* stdout is console */
+    thrptr->fdesc[2] = CONSOLE; /* stderr is console */
+
+    kprintf("Section 3.5: Stack value (saddr)= %d, Address ref= %d\n", saddr, &saddr);
 
     /* Set up new thread's stack with context record and arguments.
      * Architecture-specific.  */
     va_start(ap, nargs);
-    kprintf("s7.5\r\n");
+    kprintf("Section 7.5 (after descriptors are set up)\r\n");
     int i;
-    thrptr->stkptr = setupStack(saddr, procaddr, INITRET, nargs, ap);
+    thrptr->stkptr = setupStack(&saddr, &procaddr, &INITRET, &nargs, ap);
     va_end(ap);
-    kprintf("Section 8\r\n");
+    kprintf("Section 8 (after setupstack called)\r\n");
 
     /* Restore interrupts and return new thread TID.  */
     restore(im);
-    kprintf("Section 9\r\n");
+    kprintf("Section 9 (after restore is called)\r\n");
     return tid;
 }
 

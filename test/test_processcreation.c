@@ -22,7 +22,7 @@ extern void main(int, char *);
 int testproc()
 {
     int i = 0;
-    kprintf("Hello XINU World!\r\n");
+    kprintf("proccreation.c: Hello XINU World!\r\n");
 
     for (i = 0; i < 10; i++)
     {
@@ -39,14 +39,14 @@ void testmain()
 	for (x = 0; x < 10; x++)
 	{
 		kprintf("Getting ready to ready process %d\r\n", x);
-		create((void *) testproc, INIT64STK, 0, "NAME", 0, NULL);
+		create((void *) testproc, INITSTK, 0, "NAME", 0, NULL);
 		kprintf("Done readying process %d\r\n", x);
 	}
 
-	kprintf("Getting ready to resched");
+	kprintf("Getting ready to resched\r\n");
 	while(1)
 	{
-		kprintf("Rescheding");
+		kprintf("Rescheding\r\n");
 		resched();
 	}
 }
