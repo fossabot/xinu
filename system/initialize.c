@@ -6,34 +6,7 @@
  */
 /* Embedded Xinu, Copyright (C) 2009, 2013.  All rights reserved. */
 
-#include <kernel.h>
-#include <backplane.h>
-#include <clock.h>
-#include <device.h>
-#include <gpio.h>
-#include <memory.h>
-#include <bufpool.h>
-#include <mips.h>
-#include <thread.h>
-#include <tlb.h>
-#include <queue.h>
-#include <semaphore.h>
-#include <monitor.h>
-#include <mailbox.h>
-#include <network.h>
-#include <nvram.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <string.h>
-#include <syscall.h>
-#include <safemem.h>
-#include <platform.h>
-
-#include "bcm2837.h"
-
-#ifdef WITH_USB
-#  include <usb_subsystem.h>
-#endif
+#include <xinu.h>
 
 /* Function prototypes */
 extern thread main(void);       /* main is the first thread created    */
@@ -59,40 +32,17 @@ struct platform platform;       /* Platform specific configuration     */
 
 #define IO_BASE     0x3f000000
 #define GP_BASE     (IO_BASE + 0x200000)
-#define MU_BASE     (IO_BASE + 0x215000)
-#define PL011_BASE  (IO_BASE + 0x201000)
-#define AUX_ENB     (*(volatile unsigned *)(MU_BASE + 0x04))
-#define MU_IO       (*(volatile unsigned *)(MU_BASE + 0x40))
-#define MU_LCR      (*(volatile unsigned *)(MU_BASE + 0x4c))
-#define MU_LSR      (*(volatile unsigned *)(MU_BASE + 0x54))
-#define MU_CNTL     (*(volatile unsigned *)(MU_BASE + 0x60))
-#define MU_BAUD     (*(volatile unsigned *)(MU_BASE + 0x68))
-
 #define GPFSEL1     (*(volatile unsigned *)(GP_BASE + 0x04))
 #define GPPUD       (*(volatile unsigned *)(GP_BASE + 0x94))
 #define GPPUDCLK0   (*(volatile unsigned *)(GP_BASE + 0x98))
 #define GPSET0      (*(volatile unsigned *)(GP_BASE + 0x1C))
 #define GPCLR0      (*(volatile unsigned *)(GP_BASE + 0x28))
 
-#define PL011_DR    (*(volatile unsigned *)(PL011_BASE + 0x0))  /* Data Register */
-#define PL011_FR    (*(volatile unsigned *)(PL011_BASE + 0x18)) /* Flag Register */
-#define PL011_IBRD  (*(volatile unsigned *)(PL011_BASE + 0x24)) /* Integer Baud rate
-																   divisor */
-#define PL011_FBRD  (*(volatile unsigned *)(PL011_BASE + 0x28)) /* Fractional Baud rate
-																   divisor */
-#define PL011_LCRH  (*(volatile unsigned *)(PL011_BASE + 0x2C)) /* Line Control Register*/
-#define PL011_CR    (*(volatile unsigned *)(PL011_BASE + 0x30)) /* Control register */
-
-#define _UART_CLK    48000000
-#define _PL011_BAUD_INT(x)   (_UART_CLK / (16 * (x)))
-#define _PL011_BAUD_FRAC(x)  (int)((((_UART_CLK / (16.0 * (x)))-_PL011_BAUD_INT(x))*64.0)+0.5)
-
 void init_led(void)
 {
 	GPFSEL1 &= ~(7 << 18); // GPIO Pin 16
 	GPFSEL1 |= 1 << 18;    // Set as output
 }
-
 
 void led_on(void)
 {
@@ -103,8 +53,6 @@ void led_off(void)
 {
 	GPCLR0 = 1 << 16;
 }
-
-
 
 /**
  * Intializes the system and becomes the null thread.
@@ -129,6 +77,7 @@ void nulluser(void)
 	led_on();
 	
 	kprintf("---Hello Xinu World!---\r\n");
+	//print_os_info();
 	testmain();
 	
 	/* Enable interrupts  */
