@@ -38,6 +38,7 @@
 /* Function prototypes */
 extern thread main(void);       /* main is the first thread created    */
 static int sysinit(void);       /* intializes system structures        */
+extern int printcore(void);
 
 /* Declarations of major kernel variables */
 struct thrent thrtab[NTHREAD];  /* Thread table                   */
@@ -129,7 +130,8 @@ void nulluser(void)
 	led_on();
 	
 	kprintf("Hello Xinu W3rld!\r\n");
-//	print_os_info();
+	printcore();
+	//	print_os_info();
 	/* Enable interrupts  */
 	enable();
 

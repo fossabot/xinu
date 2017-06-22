@@ -188,11 +188,11 @@ bssloopa:
   mov   w1, 65536
   str   w1, [x0]
 */
-  mrs x7, mpidr_el1
-  and x7, x7, #3
-  cbz x7, __start_master
+	mrs x7, mpidr_el1
+	and x7, x7, #3
+	cbz x7, __start_master
 0:  wfe
-  b   0b
+	b   0b
 
 
 __start_master:
