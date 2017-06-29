@@ -7,7 +7,7 @@
 #include <arm64.h>
 
 /* Length of ARM context record in words (includes r0-r11, cpsr, lr, pc).  */
-#define CONTEXT_WORDS 31
+#define CONTEXT_WORDS 40
 
 /* The standard ARMv8 calling convention passes first eight arguments in x0-x7; the
  * rest spill onto the stack.  */
@@ -39,9 +39,9 @@ void *setupStack(void *stackaddr, void *procaddr,
 
 
     kprintf("saddr b4 align: %d\r\n", saddr);
-    /* Possibly skip a word to ensure the stack is aligned on 8-byte boundary
+    /* Possibly skip a word to ensure the stack is aligned on 16-byte boundary
      * after the new thread pops off the context record.  */
-    if ((ulong)saddr & 0x4)
+    if ((ulong)saddr & 0x8)
     {
 	kprintf("enter stack align\r\n");
         --saddr;
@@ -51,8 +51,8 @@ void *setupStack(void *stackaddr, void *procaddr,
 
     /* Construct the context record for the new thread.  */
     saddr -= CONTEXT_WORDS;
-    *saddr = 0;
-    kprintf("after &saddr=0\r\n");
+    saddr[0] = 0;
+    kprintf("after saddr[0]=0\r\n");
 
     /* Arguments passed in registers (part of context record)  */
     for (i = 0; i < reg_nargs; i++)
@@ -61,32 +61,31 @@ void *setupStack(void *stackaddr, void *procaddr,
         saddr[i] = va_arg(ap, ulong);
     }
 
-    /*
 	kprintf("b4 ctx words loop\r\n");
     for (; i < CONTEXT_WORDS - 3; i++)
     {
         kprintf("saddr= %d\r\n", saddr); 
         saddr[i] = 0;
 	kprintf("Value of i: %d\r\n", i);
-    } */
+    }
     
 
     /* Control bits of program status register
      * (SYS mode, IRQs initially enabled) */
-//    saddr[CONTEXT_WORDS - 3] = ARM_MODE_SYS | ARM_F_BIT;
+    saddr[CONTEXT_WORDS - 3] = ARM_MODE_SYS | ARM_F_BIT;
 
     /* return address  */
-//    saddr[CONTEXT_WORDS - 2] = (ulong)retaddr;
+    saddr[CONTEXT_WORDS - 2] = (ulong)retaddr;
 
     /* program counter  */
-//    saddr[CONTEXT_WORDS - 1] = (ulong)procaddr;
+    saddr[CONTEXT_WORDS - 1] = (ulong)procaddr;
 
     /* Arguments spilled onto stack (not part of context record)  */
-/*    for (i = 0; i < spilled_nargs; i++)
+    for (i = 0; i < spilled_nargs; i++)
     {
         saddr[CONTEXT_WORDS + i] = va_arg(ap, ulong);
     }
-*/
+
     /* Return "top" of stack (lowest address).  */
     return saddr;
 }

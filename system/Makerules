@@ -35,8 +35,7 @@ C_FILES += send.c
 
 # Files for device drivers
 #C_FILES += close.c control.c getc.c
-C_FILES += ioerr.c ionull.c
-# read.c putc.c seek.c write.c getdev.c open.c
+C_FILES += ioerr.c ionull.c read.c putc.c seek.c write.c getdev.c open.c
 
 # Files for system debugging
 #C_FILES += debug.c
