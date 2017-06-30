@@ -18,16 +18,16 @@
 /* CHANGED SERIAL AND CMDLINE TAGS, SWITCHED ...0006 and ...0009 */
 
 enum {
-	ATAG_NONE       = 0x00000000,	/* End of ATAG list. */
-	ATAG_CORE       = 0x54410001,	/* Start of ATAG list. */
-	ATAG_MEM        = 0x54410002,	/* Used to pass physical memory layout to the kernel. */
-	ATAG_VIDEOTEXT  = 0x54410003,	/* Describes a VGA text display. */
-	ATAG_RAMDISK    = 0x54410004,	/* Describes how the ramdisk image will be used in the kernel. */
-	ATAG_INITRD2    = 0x54410005,	/* Where the ramdisk image is placed in memory. */
-	ATAG_SERIAL     = 0x54410009,	/* 64-bit board serial number. */
-	ATAG_REVISION   = 0x54410007,	/* 32-bit board revision number. */
-	ATAG_VIDEOLFB   = 0x54410008,	/* Initial values for framebuuffers. */
-	ATAG_CMDLINE    = 0x54410006,   /* Command line to pass to kernel. */
+	ATAG_NONE       = 0x00000000, //Empty tag used to end list
+	ATAG_CORE       = 0x54410001, //First tag used to start list
+	ATAG_MEM        = 0x54410002, //Describes a physical area of memory
+	ATAG_VIDEOTEXT  = 0x54410003, //Describes a VGA text display
+	ATAG_RAMDISK    = 0x54410004, //Describes how the ramdisk will be used in kernel
+	ATAG_INITRD2    = 0x54410005, //Describes where the compressed ramdisk image is placed in memory
+	ATAG_SERIAL     = 0x54410006, //64 bit board serial number
+	ATAG_REVISION   = 0x54410007, //32 bit board revision number
+	ATAG_VIDEOLFB   = 0x54410008, //Initial values for vesafb-type framebuffers
+	ATAG_CMDLINE    = 0x54410009, //Command line to pass to kernel
 };
 
 /* Below we only define structures for tags we actually use.  */
