@@ -505,9 +505,9 @@ Linker script and memory map
  .rodata.str1.1
                 0x0000000000082678       0x5a ../system/initialize.o
  .rodata.str1.1
-                0x00000000000826d2      0x147 ../system/main.o
-                                        0x14f (size before relaxing)
- *fill*         0x0000000000082819        0x3 
+                0x00000000000826d2      0x148 ../system/main.o
+                                        0x150 (size before relaxing)
+ *fill*         0x000000000008281a        0x2 
  .rodata        0x000000000008281c        0x7 ../system/kill.o
  .rodata.str1.1
                 0x0000000000082823       0x2b ../system/xdone.o
