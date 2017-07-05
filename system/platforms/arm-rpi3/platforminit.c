@@ -24,10 +24,10 @@ enum {
 	ATAG_VIDEOTEXT  = 0x54410003,	/* Describes a VGA text display. */
 	ATAG_RAMDISK    = 0x54410004,	/* Describes how the ramdisk image will be used in the kernel. */
 	ATAG_INITRD2    = 0x54410005,	/* Where the ramdisk image is placed in memory. */
-	ATAG_SERIAL     = 0x54410009,	/* 64-bit board serial number. */
+	ATAG_SERIAL     = 0x54410006,	/* 64-bit board serial number. */
 	ATAG_REVISION   = 0x54410007,	/* 32-bit board revision number. */
 	ATAG_VIDEOLFB   = 0x54410008,	/* Initial values for framebuuffers. */
-	ATAG_CMDLINE    = 0x54410006,   /* Command line to pass to kernel. */
+	ATAG_CMDLINE    = 0x54410009,   /* Command line to pass to kernel. */
 };
 
 /* Below we only define structures for tags we actually use.  */
