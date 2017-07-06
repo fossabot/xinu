@@ -34,16 +34,11 @@ void *setupStack(void *stackaddr, void *procaddr,
         reg_nargs = nargs;
     }
 
-    // this is zero.
-    kprintf("reg_nargs is set to: %d\r\n", reg_nargs);
-
-
     kprintf("saddr b4 align: 0x%X\r\n", saddr);
-    /* Possibly skip a word to ensure the stack is aligned on 16-byte boundary
+    /* Possibly skip a word to ensure the stack is aligned on a **8-byte** boundary
      * after the new thread pops off the context record.  */
-    if ((uint)saddr & 0x8)
+    if ((uint)saddr & 0x4)
     {
-	kprintf("enter stack align\r\n");
         --saddr;
     }
 
@@ -51,7 +46,6 @@ void *setupStack(void *stackaddr, void *procaddr,
 
     /* Construct the context record for the new thread.  */
     saddr -= CONTEXT_WORDS;
-    kprintf("reach after context words\r\n");
 
     saddr[0] = 0;
     kprintf("after saddr[0]=0\r\n");
@@ -59,7 +53,6 @@ void *setupStack(void *stackaddr, void *procaddr,
     /* Arguments passed in registers (part of context record)  */
     for (i = 0; i < reg_nargs; i++)
     {
-	kprintf("in reg nargs loop\r\n");
         saddr[i] = va_arg(ap, ulong);
     }
 
@@ -72,26 +65,21 @@ void *setupStack(void *stackaddr, void *procaddr,
     /* Control bits of program status register
      * (SYS mode, IRQs initially enabled) */
     saddr[CONTEXT_WORDS - 3] = ARM_MODE_SYS | ARM_F_BIT;
-    kprintf("after arm mode sys\r\n");
 
     /* return address  */
     saddr[CONTEXT_WORDS - 2] = (ulong)retaddr;
-    kprintf("after return address\r\n");
 
     /* program counter  */
     saddr[CONTEXT_WORDS - 1] = (ulong)procaddr;
-    kprintf("after prog counter\r\n");
 
     /* Arguments spilled onto stack (not part of context record)  */
     for (i = 0; i < spilled_nargs; i++)
     {
-	
-        kprintf("enter arg spill onto stack loop\r\n");
         saddr[CONTEXT_WORDS + i] = va_arg(ap, ulong);
     }
 
-    /* Return "top" of stack (lowest address).  */
     kprintf("B4 Return: Top of stack (saddr) = 0x%X\r\n\n", saddr);
+    /* Return "top" of stack (lowest address).  */
 
     return saddr;
 }

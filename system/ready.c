@@ -23,20 +23,13 @@ int ready(tid_typ tid, bool resch)
     {
         return SYSERR;
     }
-    kprintf("\r\nreach ready 1\r\n");
     thrptr = &thrtab[tid];
     thrptr->state = THRREADY;
 
-
-    kprintf("\r\nreach ready 2\r\n");
     insert(tid, readylist, thrptr->prio);
-
-    kprintf("after insert\r\n");
 
     if (resch == RESCHED_YES)
     {
-	
-        kprintf("reach resched = yes\r\n");
         resched();
     }
 
