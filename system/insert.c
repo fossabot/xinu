@@ -22,14 +22,24 @@ int insert(tid_typ tid, qid_typ q, int key)
     int next;                   /* runs through list         */
     int prev;                   /* follows next through list */
 
+
+    kprintf("\r\ninsert 1\r\n");
     if (isbadqid(q) || isbadtid(tid))
     {
+	    
+	kprintf("BAD QID... SYSERR\r\n");
         return SYSERR;
     }
 
+    kprintf("insert 2\r\n");
     next = quetab[quehead(q)].next;
+
+    kprintf("key=%d\r\n", key);
+    kprintf("quetab[next].key=%d\r\n", quetab[next].key);
+
     while (quetab[next].key >= key)
     {
+	kprintf("enter insert while next loop");
         next = quetab[next].next;
     }
 
@@ -39,5 +49,8 @@ int insert(tid_typ tid, qid_typ q, int key)
     quetab[tid].key = key;
     quetab[prev].next = tid;
     quetab[next].prev = tid;
+
+
+    kprintf("reach insert OK\r\n");
     return OK;
 }

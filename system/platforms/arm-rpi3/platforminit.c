@@ -83,7 +83,8 @@ parse_atag_list(void)
 		kprintf("enter do.\r\n");
 		kprintf("atag=%X\r\n", atag);
 		kprintf("atags_ptr=%X\r\n", atags_ptr);
-		
+		//kprintf(atag->mem.size=0x%u, atag->mem.size);
+
 		parse_again = FALSE;
 		for (atag = atags_ptr;
 		     atag->hdr.size > 2 && atag->hdr.tag != ATAG_NONE;

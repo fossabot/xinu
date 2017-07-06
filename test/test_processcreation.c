@@ -39,7 +39,8 @@ void testmain()
 	for (x = 0; x < 10; x++)
 	{
 		kprintf("Getting ready to ready process %d\r\n", x);
-		ready(create((void *) testproc, INIT64STK, 0, "NAME", 0, NULL),0);
+
+		ready(create((void *) testproc, INIT64STK, 1, "PROCESS", 0, NULL),0);
 		kprintf("Done readying process %d\r\n", x);
 	}
 
