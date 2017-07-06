@@ -7,6 +7,7 @@
 /* Embedded Xinu, Copyright (C) 2009, 2013.  All rights reserved. */
 
 #include <xinu.h>
+#include <platform.h>
 
 /* Function prototypes */
 extern thread main(void);       /* main is the first thread created    */
@@ -97,7 +98,7 @@ void nulluser(void)
 	/* General initialization  */
 	sysinit();
 	kprintf("Hello Xinu World!\r\n-----------------\r\n");
-
+    
 	/* Print memory usage (located in system/main.c) */
 	print_os_info();
 
@@ -110,6 +111,7 @@ void nulluser(void)
 	interruptVector[IRQ_TIMER] = 0;
 	enable_irq(IRQ_TIMER);
 	clkupdate(platform.clkfreq / CLKTICKS_PER_SEC);
+   
 
 	/* Spawn the main thread  */
 	//ready(create(main, INITSTK, INITPRIO, "MAIN", 0), RESCHED_YES);
