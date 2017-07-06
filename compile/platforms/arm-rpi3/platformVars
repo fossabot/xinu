@@ -29,7 +29,7 @@ APPCOMPS :=	#apps    \
 
 # Embedded Xinu device drivers to build into the kernel image
 DEVICES  := uart-pl011      \
-#            tty	      			\
+            tty	      			\
 #           raw             \
 #           smsc9512        \
 #           tcp             \

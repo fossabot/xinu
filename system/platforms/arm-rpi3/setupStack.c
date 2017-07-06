@@ -8,7 +8,7 @@
 #include <arm64.h>
 
 /* Length of ARM context record in words (includes r0-r11, cpsr, lr, pc).  */
-#define CONTEXT_WORDS 40
+#define CONTEXT_WORDS 32
 
 /* The standard ARMv8 calling convention passes first eight arguments in x0-x7; the
  * rest spill onto the stack.  */
@@ -22,7 +22,7 @@ void *setupStack(void *stackaddr, void *procaddr,
     uint spilled_nargs;
     uint reg_nargs;
     uint i;
-    ulong *saddr = stackaddr;
+    uint *saddr = stackaddr;
 
     /* Determine if any arguments will spill onto the stack (outside the context
      * record).  If so, reserve space for them.  */
@@ -39,19 +39,21 @@ void *setupStack(void *stackaddr, void *procaddr,
     kprintf("reg_nargs is set to: %d\r\n", reg_nargs);
 
 
-    kprintf("saddr b4 align: %d\r\n", saddr);
+    kprintf("saddr b4 align: 0x%X\r\n", saddr);
     /* Possibly skip a word to ensure the stack is aligned on 16-byte boundary
      * after the new thread pops off the context record.  */
-    if ((ulong)saddr & 0x8)
+    if ((uint)saddr & 0x8)
     {
 	kprintf("enter stack align\r\n");
         --saddr;
     }
 
-    kprintf("saddr after stack align: %d\r\n", saddr);
+    kprintf("saddr after stack align: 0x%X\r\n", saddr);
 
     /* Construct the context record for the new thread.  */
     saddr -= CONTEXT_WORDS;
+    kprintf("reach after context words\r\n");
+
     saddr[0] = 0;
     kprintf("after saddr[0]=0\r\n");
 
@@ -62,31 +64,35 @@ void *setupStack(void *stackaddr, void *procaddr,
         saddr[i] = va_arg(ap, ulong);
     }
 
-	kprintf("b4 ctx words loop\r\n");
     for (; i < CONTEXT_WORDS - 3; i++)
     {
-        kprintf("saddr= %d\r\n", saddr); 
         saddr[i] = 0;
-	kprintf("Value of i: %d\r\n", i);
     }
     
 
     /* Control bits of program status register
      * (SYS mode, IRQs initially enabled) */
     saddr[CONTEXT_WORDS - 3] = ARM_MODE_SYS | ARM_F_BIT;
+    kprintf("after arm mode sys\r\n");
 
     /* return address  */
     saddr[CONTEXT_WORDS - 2] = (ulong)retaddr;
+    kprintf("after return address\r\n");
 
     /* program counter  */
     saddr[CONTEXT_WORDS - 1] = (ulong)procaddr;
+    kprintf("after prog counter\r\n");
 
     /* Arguments spilled onto stack (not part of context record)  */
     for (i = 0; i < spilled_nargs; i++)
     {
+	
+        kprintf("enter arg spill onto stack loop\r\n");
         saddr[CONTEXT_WORDS + i] = va_arg(ap, ulong);
     }
 
     /* Return "top" of stack (lowest address).  */
+    kprintf("B4 Return: Top of stack (saddr) = 0x%X\r\n\n", saddr);
+
     return saddr;
 }

@@ -35,6 +35,7 @@
 #define BADTID      (-1)        /**< used when invalid tid needed       */
 
 /* thread initialization constants */
+#define INIT64STK   131072        /**< initial thread stack size for v8   */
 #define INITSTK     65536       /**< initial thread stack size          */
 #define INITPRIO    20          /**< initial thread priority            */
 #define MINSTK      128         /**< minimum thread stack size          */
