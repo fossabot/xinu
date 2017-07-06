@@ -86,16 +86,13 @@ tid_typ create(void *procaddr, uint ssize, int priority,
      * Architecture-specific.  */
     va_start(ap, nargs);
 
-    kprintf("setupstack args values (saddr, procaddr, INITRET, nargs)= 0x%X, %d, %d, %d", saddr, procaddr, INITRET, nargs);
     thrptr->stkptr = setupStack(saddr, procaddr, INITRET, nargs, ap);
     kprintf("\r\nCreate.C: Returned from setupstack: 0x%X\r\n", setupStack(saddr, procaddr, INITRET, nargs, ap));
-    kprintf("reach 1\r\n");
     va_end(ap);
 
     /* Restore interrupts and return new thread TID.  */
     restore(im);
  
-    kprintf("reach 2\r\n");
     return tid;
 }
 
