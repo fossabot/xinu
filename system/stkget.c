@@ -76,5 +76,7 @@ void *stkget(uint nbytes)
 
     memlist.length -= nbytes;
     restore(im);
+
+    kprintf("STACK RETURNED FROM STKGET: 0x%X\r\n", (void *)((ulong)fits + nbytes - sizeof(int)));
     return (void *)((ulong)fits + nbytes - sizeof(int));
 }

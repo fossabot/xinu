@@ -78,18 +78,21 @@ tid_typ create(void *procaddr, uint ssize, int priority,
     thrptr->memlist.length = 0;
 
     /* Set up default file descriptors.  */
-    //thrptr->fdesc[0] = CONSOLE; /* stdin  is console */
-    //thrptr->fdesc[1] = CONSOLE; /* stdout is console */
-    //thrptr->fdesc[2] = CONSOLE; /* stderr is console */
+    thrptr->fdesc[0] = CONSOLE; /* stdin  is console */
+    thrptr->fdesc[1] = CONSOLE; /* stdout is console */
+    thrptr->fdesc[2] = CONSOLE; /* stderr is console */
 
     /* Set up new thread's stack with context record and arguments.
      * Architecture-specific.  */
     va_start(ap, nargs);
+
     thrptr->stkptr = setupStack(saddr, procaddr, INITRET, nargs, ap);
+    kprintf("\r\nCreate.C: Returned from setupstack: 0x%X\r\n", setupStack(saddr, procaddr, INITRET, nargs, ap));
     va_end(ap);
 
     /* Restore interrupts and return new thread TID.  */
     restore(im);
+ 
     return tid;
 }
 
@@ -106,6 +109,8 @@ static int thrnew(void)
     /* check all NTHREAD slots    */
     for (tid = 0; tid < NTHREAD; tid++)
     {
+
+    kprintf("enter thread ID for loop\r\n");
         nexttid = (nexttid + 1) % NTHREAD;
         if (THRFREE == thrtab[nexttid].state)
         {

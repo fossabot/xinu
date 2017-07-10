@@ -14,44 +14,36 @@
 
 
 #include <thread.h>
-#include <arm.h>
+#include <arm64.h>
 
 extern void main(int, char *);
 
-
 int testproc()
 {
-    int i = 0;
-    kprintf("proccreation.c: Hello XINU World!\r\n");
-
-    for (i = 0; i < 10; i++)
-    {
-        kprintf("This is process %d\r\n", thrcurrent);
-
-        /* Uncomment the resched() line for cooperative scheduling. */
-        resched();
-    }
+    // Test job for the process to handle
+    kprintf("*TESTPROC*\r\n");
     return 0;
 }
+
 void testmain()
 {
-	int x = 0;
-	for (x = 0; x < 10; x++)
-	{
-		kprintf("Getting ready to ready process %d\r\n", x);
-		ready(create((void *) testproc, INIT64STK, 0, "NAME", 0, NULL),0);
-		kprintf("Done readying process %d\r\n", x);
-	}
 
-	kprintf("Getting ready to resched\r\n");
+        kprintf("\r\n------------------------------- This is process 1 -------------------------------\r\n");
+	ready(create((void *) testproc, INIT64STK, 1, "PROCESS 1", 0, NULL),0);
+	kprintf("Done readying process 1\r\n");
+       
+       	kprintf("\r\n------------------------------- This is process 2 -------------------------------\r\n");
+	ready(create((void *) testproc, INIT64STK, 2, "PROCESS 2", 0, NULL),0);
+	kprintf("Done readying process 2\r\n");
+	
 	while(1)
 	{
-		kprintf("Rescheding\r\n");
-		resched();
+		kprintf("Rescheding...\r\n");
+		resched(); 
+		kprintf("Resched complete.\r\n");
 	}
 }
 
-/*
 void testbigargs(int a, int b, int c, int d, int e, int f, int g, int h, int i)
 {
     kprintf("Testing bigargs...\r\n");
@@ -65,40 +57,42 @@ void testbigargs(int a, int b, int c, int d, int e, int f, int g, int h, int i)
     kprintf("h = 0x%08X\r\n", h);
     kprintf("i = 0x%08X\r\n", i);
 }
-void printpcb(int pid)
+void printpcb(int tid)
 {
-    pcb *ppcb = NULL;
-*/
+    struct thrent *tthrent = NULL;
+
+    kprintf("b4 tthrent=thrtab\r\n");
     /* Using the process ID, access it in the PCB table. */
-  //  ppcb = &proctab[pid];
+    tthrent = &thrtab[tid];
+    kprintf("after tthrent=thrtab\r\n");
 
     /* Printing PCB */
-/* kprintf("Process name                 : %s \r\n", ppcb->name);
-    switch (ppcb->state)
+     kprintf("Process name                 : %s \r\n", tthrent->name);
+    switch (tthrent->state)
     {
-    case PRFREE:
+    case THRFREE:
         kprintf("State of the process     : FREE \r\n");
         break;
-    case PRCURR:
+    case THRCURR:
         kprintf("State of the process     : CURRENT \r\n");
         break;
-    case PRSUSP:
+    case THRSUSP:
         kprintf("State of the process     : SUSPENDED \r\n");
         break;
-    case PRREADY:
+    case THRREADY:
         kprintf("State of the process     : READY \r\n");
         break;
     default:
         kprintf("ERROR: Process state not correctly set!\r\n");
         break;
     }
-*/
+
     /* Print PCB contents and registers */
-/*    kprintf("Base of run time stack    : 0x%08X \r\n", ppcb->stkbase);
-    kprintf("Stack pointer of process  : 0x%08X \r\n",
-            ppcb->regs[PREG_SP]);
-    kprintf("Stack length of process   : %8u \r\n", ppcb->stklen);
-}*/
+    kprintf("Base of run time stack    : 0x%08X \r\n", tthrent->stkbase);
+    //kprintf("Stack pointer of process  : 0x%08X \r\n",
+    //        tthrent->regs[PREG_SP]);
+    kprintf("Stack length of process   : %8u \r\n", tthrent->stklen);
+}
 
 /**
  * testcases - called after initialization completes to test things.

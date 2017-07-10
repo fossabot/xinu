@@ -7,7 +7,7 @@
 #include <arm64.h>
 
 /* Length of ARM context record in words (includes r0-r11, cpsr, lr, pc).  */
-#define CONTEXT_WORDS 40
+#define CONTEXT_WORDS 32
 
 /* The standard ARMv8 calling convention passes first eight arguments in x0-x7; the
  * rest spill onto the stack.  */
@@ -21,7 +21,7 @@ void *setupStack(void *stackaddr, void *procaddr,
     uint spilled_nargs;
     uint reg_nargs;
     uint i;
-    ulong *saddr = stackaddr;
+    uint *saddr = stackaddr;
 
     /* Determine if any arguments will spill onto the stack (outside the context
      * record).  If so, reserve space for them.  */
@@ -34,39 +34,31 @@ void *setupStack(void *stackaddr, void *procaddr,
         reg_nargs = nargs;
     }
 
-    // this is zero.
-    kprintf("reg_nargs is set to: %d\r\n", reg_nargs);
-
-
-    kprintf("saddr b4 align: %d\r\n", saddr);
-    /* Possibly skip a word to ensure the stack is aligned on 16-byte boundary
+    kprintf("saddr b4 align: 0x%X\r\n", saddr);
+    /* Possibly skip a word to ensure the stack is aligned on a **8-byte** boundary
      * after the new thread pops off the context record.  */
-    if ((ulong)saddr & 0x8)
+    if ((uint)saddr & 0x4)
     {
-	kprintf("enter stack align\r\n");
         --saddr;
     }
 
-    kprintf("saddr after stack align: %d\r\n", saddr);
+    kprintf("saddr after stack align: 0x%X\r\n", saddr);
 
     /* Construct the context record for the new thread.  */
     saddr -= CONTEXT_WORDS;
+
     saddr[0] = 0;
     kprintf("after saddr[0]=0\r\n");
 
     /* Arguments passed in registers (part of context record)  */
     for (i = 0; i < reg_nargs; i++)
     {
-	kprintf("in reg nargs loop\r\n");
         saddr[i] = va_arg(ap, ulong);
     }
 
-	kprintf("b4 ctx words loop\r\n");
     for (; i < CONTEXT_WORDS - 3; i++)
     {
-        kprintf("saddr= %d\r\n", saddr); 
         saddr[i] = 0;
-	kprintf("Value of i: %d\r\n", i);
     }
     
 
@@ -86,6 +78,8 @@ void *setupStack(void *stackaddr, void *procaddr,
         saddr[CONTEXT_WORDS + i] = va_arg(ap, ulong);
     }
 
+    kprintf("B4 Return: Top of stack (saddr) = 0x%X\r\n\n", saddr);
     /* Return "top" of stack (lowest address).  */
+
     return saddr;
 }
