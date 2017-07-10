@@ -33,8 +33,8 @@
 #endif
 
 #define EMPTY (-2)              /**< null pointer for queues            */
-#define MAXKEY 0x7FFFFFFF       /**< max key that can be saved in queue */
-#define MINKEY 0x80000000       /**< min key that can be saved in queue */
+#define MAXKEY 2147483647       /**< max key that can be saved in queue */
+#define MINKEY (-2147483648)    /**< min key that can be saved in queue */
 
 typedef int qid_typ;            /**< represent queue id by head index   */
 

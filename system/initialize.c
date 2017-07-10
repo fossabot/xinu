@@ -98,21 +98,10 @@ void nulluser(void)
 	/* General initialization  */
 	sysinit();
 	kprintf("Hello Xinu World!\r\n-----------------\r\n");
-    
-    ulong *add = 989855732;
-    int i = 0;
-    
-    for (i = 0; i <= 1000; i += 1)
-    {
-        add[i] = 0;
-        kprintf("Memory address %d has %d\r\n", i, add[i]);
-        kprintf("Memory address %d is available\r\n", i);
-    }
-    
 	/* Print memory usage (located in system/main.c) */
 	print_os_info();
 
-	/* Call to test method (located in system/main.c) */
+	/* Call to test method (located in test/test_processcreation.c) */
 	testmain();
 
 	/* Enable interrupts  */
@@ -183,7 +172,7 @@ static int sysinit(void)
 	}
 
 	/* initialize thread ready list */
-	//	readylist = queinit();
+	readylist = queinit();
 
 #ifdef UHEAP_SIZE
 	/* Initialize user memory manager */
