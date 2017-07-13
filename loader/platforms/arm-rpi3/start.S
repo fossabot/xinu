@@ -31,7 +31,7 @@
  * +----------+
  */
 
-#include <arm64.h>     /* For ARM_MODE_SYS */
+#include <arm32.h>     /* For ARM_MODE_SYS */
 
 #define IO_BASE 0x3f000000
 #define GP_BASE 0x3f200000
@@ -43,8 +43,9 @@
 	.globl _start
 
 	/* _start:  Entry point of the Xinu kernel.  This will be the very first
-	 * byte of the kernel image and on the Raspberry Pi 3 will be loaded by
-	 * the GPU at address 0x80000.  */
+	/* byte of the kernel image and on the Raspberry Pi 3 (32-bit mode) will be loaded by
+	/* the GPU at address 0x8000.  */
+
 	.func _start
 _start:
 	/* Save the pointer to the atags (ARM boot tags). The standard protocol for
@@ -52,51 +53,107 @@ _start:
 	 * x1 through x3 are initialized to zero. Refer to this link:
 	 * https://github.com/raspberrypi/tools/blob/master/armstubs/armstub8.S	*/
 
-	ldr 	x4, =atags_ptr
-	cmp	x0, #0
-	b.ne	_start0
-	mov	x0, 0x100
+	ldr 	r3, =atags_ptr
+	cmp	r2, #0
+	moveq   r2, #0x100
+	str 	r2, [r3]
 
-_start0:
-	str 	x0, [x4]
+        /* Continue at reset handler. */
+	b reset_handler
+	.endfunc
 
+/* ARM exception vector table.  This is copied to address 0.  See A2.6
+ * "Exceptions" of the ARM Architecture Reference Manual.  */
+_vectors:
+	ldr pc, reset_addr    /* Reset handler */
+	ldr pc, undef_addr	  /* Undefined instruction handler */
+	ldr pc, swi_addr	  /* Software interrupt handler */
+	ldr pc, prefetch_addr /* Prefetch abort handler */
+	ldr pc, abort_addr	  /* Data abort handler */
+	ldr pc, reserved_addr /* Reserved */
+	ldr pc, irq_addr	  /* IRQ (Interrupt request) handler */
+	ldr pc, fiq_addr	  /* FIQ (Fast interrupt request) handler */
+
+reset_addr:     .word reset_handler
+undef_addr:     .word reset_handler
+swi_addr:       .word reset_handler
+prefetch_addr:  .word reset_handler
+abort_addr:     .word reset_handler
+reserved_addr:  .word reset_handler
+irq_addr:       .word irq_handler
+fiq_addr:       .word reset_handler
+
+_endvectors:
+
+.section .text
+
+	/* reset_handler: Reset handler routine executed to start up the kernel,
+	 * when the ARM processor is reset, or (currently) when an unhandled
+	 * exception occurs.  */
+	.func reset_handler
+reset_handler:
+
+	/* Enter SYSTEM mode with all interrupts disabled so the ARM processor is
+	 * in a known state. */
+	cpsid	aif, #ARM_MODE_SYS
+
+	/* Copy the ARM exception table from .init section to address 0,
+	 * including the absolute address table.  Here we assume it is exactly
+	 * 16 words.  */
+	mov r0, #0
+	ldr r1, =_vectors
+	ldmia r1!, {r2-r9}
+	stmia r0!, {r2-r9}
+	ldmia r1!, {r2-r9}
+	stmia r0!, {r2-r9}
+
+	/* Enable the following features by modifying the ARM processor's
+	 * Control Register:
+	 *
+	 * - unaligned memory accesses   (bit 22)
+	 *
+	 * Note: Xinu shouldn't do any unaligned memory accesses on purpose, but
+	 * we found that gcc can still generate unaligned memory accesses for
+	 * tasks such as copying character strings.  (An alternative would be to
+	 * pass -mno-unaligned-access to gcc to prevent it from doing so.)  */
+	mrc p15, 0, r0, c1, c0, 0
+	orr r0, #1 << 22
+	mcr p15, 0, r0, c1, c0, 0
 
 	/* Clear the .bss section of the kernel.  */
-	ldr x0, =_bss
-	ldr x1, =_end
-  	mov x2, #0
+	ldr r0, =_bss
+	ldr r1, =_end
+  	mov r2, #0
+        mov r3, #0
+	mov r4, #0
+	mov r5, #0
   	b bssloopa
+
 bssloopb:
-  	str x2, [x0, 8]
-  	str x2, [x0, 16]
-  	str x2, [x0, 24]
-  	str x2, [x0, 32]
-  	add x0, x0, 32
+	stmia r0!, {r2-r5}
 
 bssloopa:
-	cmp x0, x1 	/* check that we still haven't hit the end of bss yet */
-	b.lo bssloopb	/* if still below, go backwards and loop */
-
-
+	cmp r0, r1 	/* check that we still haven't hit the end of bss yet */
+	blo bssloopb	/* if still below, go backwards and loop */
 
 	/* Put the null thread's stack directly after the kernel image.  */
-	add sp, x1, #NULLSTK
+	add sp, r1, #NULLSTK
 
 	/* The remaining memory available to the ARM will be Xinu's "memheap"
 	 * region, which is used for dynamic memory allocation.  Set its
 	 * starting address.  */
-	ldr x0, =memheap
-        mov x1, sp
-        str x1, [x0]
+	ldr r0, =memheap
+        str sp, [r0]
 
-  	mrs x7, mpidr_el1
-  	and x7, x7, #3
-  	cbz x7, __start_master
-	0:  wfe
-  	b   0b
+/*
+/*  	mrs r7, mpidr_el1
+/* 	and r7, r7, #3
+/*  	cbz r7, __start_master
+/*	0:  wfe
+/*	b   0b
+*/
 
 	/* Branch to nulluser function, located in xinu/system/initialize.c
 	 * The function will initialize the system and become the null thread. */ 
-__start_master:
 	b	nulluser
 	.endfunc

@@ -1,27 +1,19 @@
 
 /**
- * @file processcreation.c
- * @provides testcases
- *
- * $Id: testcases.c 175 2008-01-30 01:18:27Z brylow $
- *
- * Modified by: Priya Bansal
- *
- * and Ben Mol
- *
+ * @file tset_processcreation.c
  */
 /* Embedded XINU, Copyright (C) 2007.  All rights reserved. */
 
 
 #include <thread.h>
-#include <arm64.h>
+#include <arm32.h>
 
 extern void main(int, char *);
 
 int testproc()
 {
     // Test job for the process to handle
-    kprintf("*TESTPROC*\r\n");
+    kprintf("\r\n**Process testing section**\r\n");
     return 0;
 }
 
@@ -29,11 +21,11 @@ void testmain()
 {
 
         kprintf("\r\n------------------------------- This is process 1 -------------------------------\r\n");
-	ready(create((void *) testproc, INIT64STK, 1, "PROCESS 1", 0, NULL),0);
+	ready(create((void *) testproc, INITSTK, 1, "PROCESS 1", 0, NULL),0);
 	kprintf("Done readying process 1\r\n");
        
        	kprintf("\r\n------------------------------- This is process 2 -------------------------------\r\n");
-	ready(create((void *) testproc, INIT64STK, 2, "PROCESS 2", 0, NULL),0);
+	ready(create((void *) testproc, INITSTK, 2, "PROCESS 2", 0, NULL),0);
 	kprintf("Done readying process 2\r\n");
 	
 	while(1)

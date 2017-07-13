@@ -174,6 +174,7 @@ static int sysinit(void)
 
 	/* initialize thread ready list */
 	readylist = queinit();
+	kprintf("readylist = %d, after queinit()\r\n");
 
 #ifdef UHEAP_SIZE
 	/* Initialize user memory manager */
