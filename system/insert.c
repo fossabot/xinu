@@ -19,38 +19,31 @@
  */
 int insert(tid_typ tid, qid_typ q, int key)
 {
-    int next;                   /* runs through list         */
-    int prev;                   /* follows next through list */
+	int next;                   /* runs through list         */
+	int prev;                   /* follows next through list */
 
+	if (isbadqid(q) || isbadtid(tid))
+	{
+		kprintf("BAD QID... SYSERR\r\n");
+		return SYSERR;
+	}
 
-    kprintf("\r\ninsert 1\r\n");
-    if (isbadqid(q) || isbadtid(tid))
-    {
-	    
-	kprintf("BAD QID... SYSERR\r\n");
-        return SYSERR;
-    }
+	next = quetab[quehead(q)].next;
 
-    kprintf("insert 2\r\n");
-    next = quetab[quehead(q)].next;
+	while (quetab[next].key >= key)
+	{
+		kprintf("key=%d\r\n", key);
+		kprintf("quetab[next].key=%d\r\n", quetab[next].key);
+		kprintf("enter insert while next loop\r\n");
+		next = quetab[next].next;
+	}
 
-    kprintf("key=%d\r\n", key);
-    kprintf("quetab[next].key=%d\r\n", quetab[next].key);
+	/* insert tid between prev and next */
+	quetab[tid].next = next;
+	quetab[tid].prev = prev = quetab[next].prev;
+	quetab[tid].key = key;
+	quetab[prev].next = tid;
+	quetab[next].prev = tid;
 
-    while (quetab[next].key >= key)
-    {
-	kprintf("enter insert while next loop");
-        next = quetab[next].next;
-    }
-
-    /* insert tid between prev and next */
-    quetab[tid].next = next;
-    quetab[tid].prev = prev = quetab[next].prev;
-    quetab[tid].key = key;
-    quetab[prev].next = tid;
-    quetab[next].prev = tid;
-
-
-    kprintf("reach insert OK\r\n");
-    return OK;
+	return OK;
 }

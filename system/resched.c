@@ -57,7 +57,6 @@ int resched(void)
     asid = thrcurrent & 0xff;
     kprintf("\r\nContext switching...\r\n");
     ctxsw(&throld->stkptr, &thrnew->stkptr, asid);
-    kprintf("Ctxsw complete.\r\n");
 
     /* old thread returns here when resumed */
     restore(throld->intmask);
