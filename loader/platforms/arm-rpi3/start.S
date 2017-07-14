@@ -53,6 +53,17 @@ _start:
 	 * x1 through x3 are initialized to zero. Refer to this link:
 	 * https://github.com/raspberrypi/tools/blob/master/armstubs/armstub8.S	*/
 
+	bl	init_led
+
+	mrs	r0, cpsr		
+	and	r1, r0, #0b00100	/* check each M bit to try to figure out which mode we are in */
+
+	/* if bit is not zero, turn on LED */
+	cmp	r1, #0
+	bne	not_true
+	bl	led_on
+not_true:	
+	
 	ldr 	r3, =atags_ptr
 	cmp	r2, #0
 	moveq   r2, #0x100
