@@ -87,7 +87,9 @@ interrupt gpio_handler(void)
  */
 void nulluser(void)
 {
-	int lev;
+	uint lev;
+	uint mode;
+	int i;
 
 	init_led();
 	init_button();
@@ -102,15 +104,24 @@ void nulluser(void)
 	/* Print memory usage (located in system/main.c) */
 	print_os_info();
 
+	// cpsr
+	mode = getmode();
+	
+	kprintf("Printing out CPSR:\r\n");
+	
+	// print out bits of cpsr
+	for (i = 31; i >= 0; i--)
+		kprintf("%d", (mode >> i) & 1);
+
 	/* Call to test method (located in test/test_processcreation.c) */
-	testmain();
+//	testmain();
 
 	/* Enable interrupts  */
-	enable();
+//	enable();
 
-	interruptVector[IRQ_TIMER] = 0;
-	enable_irq(IRQ_TIMER);
-	clkupdate(platform.clkfreq / CLKTICKS_PER_SEC);
+//	interruptVector[IRQ_TIMER] = 0;
+//	enable_irq(IRQ_TIMER);
+//	clkupdate(platform.clkfreq / CLKTICKS_PER_SEC);
    
 
 	/* Spawn the main thread  */
