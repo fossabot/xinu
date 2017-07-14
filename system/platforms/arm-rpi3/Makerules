@@ -9,7 +9,8 @@ S_FILES = ctxsw.S          \
           intutils.S       \
           irq_handler.S    \
           memory_barrier.S \
-          pause.S
+          pause.S		   \
+		  getmode.S
 
 C_FILES = setupStack.c       \
           bcm2837_power.c    \
