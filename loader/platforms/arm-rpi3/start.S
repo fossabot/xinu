@@ -74,6 +74,7 @@ _start:
 
 /* ARM exception vector table.  This is copied to address 0.  See A2.6
  * "Exceptions" of the ARM Architecture Reference Manual.  */
+.balign	0x20
 _vectors:
 	ldr pc, reset_addr    /* Reset handler */
 	ldr pc, undef_addr	  /* Undefined instruction handler */
@@ -106,18 +107,14 @@ reset_handler:
 	/* Enter SYSTEM mode with all interrupts disabled so the ARM processor is
 	 * in a known state. */
 	cpsid	if, #ARM_MODE_SYS
-
-	bl	led_on
 	
 	/* Copy the ARM exception table from .init section to address 0,
 	 * including the absolute address table.  Here we assume it is exactly
 	 * 16 words.  */
-	mov r0, #0
-	ldr r1, =_vectors
-	ldmia r1!, {r2-r9}
-	stmia r0!, {r2-r9}
-	ldmia r1!, {r2-r9}
-	stmia r0!, {r2-r9}
+	ldr	r1, =_vectors
+	mcr	p15, 0, r1, c12, c0, 0	/* Write to VBAR */
+
+	bl	led_on
 
 	/* Enable the following features by modifying the ARM processor's
 	 * Control Register:
