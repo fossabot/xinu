@@ -49,11 +49,6 @@ void init_led(void)
 	GPFSEL1 |= 1 << 18;    // Set as output
 }
 
-void init_button(void)
-{
-	GPFSEL1 &= ~(7 << 21); // GPIO Pin 17 as input
-}
-
 void led_on(void)
 {
 	GPSET0 = 1 << 16;
@@ -92,7 +87,6 @@ void nulluser(void)
 	int i;
 
 	init_led();
-	init_button();
 
 	/* Platform-specific initialization (system/platforms/arm-rpi3/platforminit.c) */
 	platforminit();

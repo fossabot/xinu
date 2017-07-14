@@ -16,12 +16,18 @@ halt:
 	.func halt
 
 _loop:
+	ldr	r0, =string
+	bl	kprintf
 	/* Disable IRQs and FIQs.  */
-	msr cpsr_c, #ARM_I_BIT | ARM_F_BIT
+//	msr cpsr_c, #ARM_I_BIT | ARM_F_BIT
 
 	/* Wait for interrupt.  */
-	wfi
+//	wfi
 
 	/* Shouldn't be necessary, but repeat just in case.  */
 	b _loop
 	.endfunc
+
+.data
+string: .asciz "Reached halt.\r\n"
+
