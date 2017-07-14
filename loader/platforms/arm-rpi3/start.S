@@ -107,10 +107,6 @@ reset_handler:
 	/* Enter SYSTEM mode with all interrupts disabled so the ARM processor is
 	 * in a known state. */
 	cpsid	if, #ARM_MODE_SYS
-<<<<<<< HEAD
-=======
-
->>>>>>> 6a98c2a9bc1d328c24cc34d2586835dc5d53c6c4
 	
 	/* Copy the ARM exception table from .init section to address 0,
 	 * including the absolute address table.  Here we assume it is exactly
