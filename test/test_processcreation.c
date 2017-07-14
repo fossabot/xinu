@@ -9,25 +9,30 @@
 #include <arm32.h>
 
 extern void main(int, char *);
+void testproc(void);
+void printtid(int tid);
 
-int testproc()
+void testproc(void)
 {
     // Test job for the process to handle
     kprintf("\r\n**Process testing section**\r\n");
-    return 0;
 }
 
 void testmain()
 {
-
+	int tid;
         kprintf("\r\n------------------------------- This is process 1 -------------------------------\r\n");
-	ready(create((void *) testproc, INITSTK, 1, "PROCESS 1", 0, NULL),0);
-	kprintf("Done readying process 1\r\n");
+	tid=create((void *) testproc, INITSTK, 1, "PROCESS 1", 0, NULL);
+	ready(tid, 0);
+	kprintf("Done readying process: %d\r\n", tid);
+	printtid(tid);
        
        	kprintf("\r\n------------------------------- This is process 2 -------------------------------\r\n");
-	ready(create((void *) testproc, INITSTK, 2, "PROCESS 2", 0, NULL),0);
-	kprintf("Done readying process 2\r\n");
-	
+	tid=create((void *) testproc, INITSTK, 2, "PROCESS 2", 0, NULL);
+	ready(tid, 0);
+	kprintf("Done readying process: %d\r\n", tid);
+	printtid(tid);
+
 	while(1)
 	{
 		kprintf("Rescheding...\r\n");
@@ -49,16 +54,16 @@ void testbigargs(int a, int b, int c, int d, int e, int f, int g, int h, int i)
     kprintf("h = 0x%08X\r\n", h);
     kprintf("i = 0x%08X\r\n", i);
 }
-void printpcb(int tid)
+void printtid(int tid)
 {
     struct thrent *tthrent = NULL;
 
     kprintf("b4 tthrent=thrtab\r\n");
-    /* Using the process ID, access it in the PCB table. */
+    /* Using the Thread ID, access it in the TID table. */
     tthrent = &thrtab[tid];
     kprintf("after tthrent=thrtab\r\n");
 
-    /* Printing PCB */
+    /* Printing TID */
      kprintf("Process name                 : %s \r\n", tthrent->name);
     switch (tthrent->state)
     {
@@ -79,7 +84,7 @@ void printpcb(int tid)
         break;
     }
 
-    /* Print PCB contents and registers */
+    /* Print TID contents and registers */
     kprintf("Base of run time stack    : 0x%08X \r\n", tthrent->stkbase);
     //kprintf("Stack pointer of process  : 0x%08X \r\n",
     //        tthrent->regs[PREG_SP]);
