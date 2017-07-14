@@ -51,23 +51,23 @@ _start:
 	/* Save the pointer to the atags (ARM boot tags). The standard protocol for
 	 * Aarch64 (ARMv8-A) is to pass the atags pointer into register 0 (x0). And registers
 	 * x1 through x3 are initialized to zero. Refer to this link:
-	 * https://github.com/raspberrypi/tools/blob/master/armstubs/armstub8.S	*/
-
-	bl	init_led
-
-	mrs	r0, cpsr		
-	and	r1, r0, #0b00100	/* check each M bit to try to figure out which mode we are in */
-
-	/* if bit is not zero, turn on LED */
-	cmp	r1, #0
-	bne	not_true
-	bl	led_on
-not_true:	
+	 * https://github.com/raspberrypi/tools/blob/master/armstubs/armstub8.S	*/	
 	
 	ldr 	r3, =atags_ptr
 	cmp	r2, #0
 	moveq   r2, #0x100
 	str 	r2, [r3]
+
+	bl	init_led	
+
+	mrs	r0, cpsr
+	bic	r0, r0, #0x1F
+	orr	r0, r0, #0x13
+	msr	spsr_cxsf, r0
+	add	r0, pc, #4
+	msr	ELR_hyp, r0
+	eret
+
 
         /* Continue at reset handler. */
 	b reset_handler
@@ -106,8 +106,11 @@ reset_handler:
 
 	/* Enter SYSTEM mode with all interrupts disabled so the ARM processor is
 	 * in a known state. */
-//	cpsid	aif, #ARM_MODE_SYS
+	cps	#ARM_MODE_SYS
+	cpsid	if
 
+	bl	led_on
+	
 	/* Copy the ARM exception table from .init section to address 0,
 	 * including the absolute address table.  Here we assume it is exactly
 	 * 16 words.  */
