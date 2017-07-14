@@ -157,14 +157,17 @@ bssloopa:
 	ldr r0, =memheap
         str sp, [r0]
 
-/*
-/*  	mrs r7, mpidr_el1
-/* 	and r7, r7, #3
-/*  	cbz r7, __start_master
-/*	0:  wfe
-/*	b   0b
-*/
 
+	mrc p15, 0, r0, c0, c0, 5
+  	mov r1, #0xC1000000
+	bic r1, r0, r1
+	cmp r1, #0
+	beq __start_master
+not_zero:
+	wfi
+	b not_zero
+
+__start_master:
 	/* Branch to nulluser function, located in xinu/system/initialize.c
 	 * The function will initialize the system and become the null thread. */ 
 	b	nulluser

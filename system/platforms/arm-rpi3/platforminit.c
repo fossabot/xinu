@@ -120,6 +120,7 @@ parse_atag_list(void)
 					break;
 			}
 		}
+		kprintf(parse_again ? "\r\ntrue\r\n" : "\r\nfalse\r\n");
 	} while (parse_again);
 
 	/* Set platform maximum address if calculated value is not insane.  */
