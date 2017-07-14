@@ -110,11 +110,11 @@ void nulluser(void)
 	testmain();
 
 	/* Enable interrupts  */
-//	enable();
+	enable();
 
-//	interruptVector[IRQ_TIMER] = 0;
-//	enable_irq(IRQ_TIMER);
-//	clkupdate(platform.clkfreq / CLKTICKS_PER_SEC);
+	interruptVector[IRQ_TIMER] = 0;
+	enable_irq(IRQ_TIMER);
+	clkupdate(platform.clkfreq / CLKTICKS_PER_SEC);
    
 
 	/* Spawn the main thread  */
