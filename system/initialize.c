@@ -114,7 +114,7 @@ void nulluser(void)
 		kprintf("%d", (mode >> i) & 1);
 
 	/* Call to test method (located in test/test_processcreation.c) */
-//	testmain();
+	testmain();
 
 	/* Enable interrupts  */
 //	enable();

@@ -59,7 +59,7 @@ tid_typ create(void *procaddr, uint ssize, int priority,
 
     /* Allocate new thread ID.  */
     tid = thrnew();
-    kprintf("tid=thrnew(), tid=%p\r\n", tid);
+    kprintf("tid=thrnew(), tid=%d\r\n", tid);
 
     if (SYSERR == (int)tid)
     {

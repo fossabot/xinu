@@ -68,7 +68,6 @@ _start:
 	msr	ELR_hyp, r0
 	eret
 
-
         /* Continue at reset handler. */
 	b reset_handler
 	.endfunc
@@ -106,8 +105,7 @@ reset_handler:
 
 	/* Enter SYSTEM mode with all interrupts disabled so the ARM processor is
 	 * in a known state. */
-	cps	#ARM_MODE_SYS
-	cpsid	if
+	cpsid	if, #ARM_MODE_SYS
 
 	bl	led_on
 	
