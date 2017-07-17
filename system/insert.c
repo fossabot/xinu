@@ -24,7 +24,6 @@ int insert(tid_typ tid, qid_typ q, int key)
 
 	if (isbadqid(q) || isbadtid(tid))
 	{
-		kprintf("BAD QID... SYSERR\r\n");
 		return SYSERR;
 	}
 
@@ -32,9 +31,6 @@ int insert(tid_typ tid, qid_typ q, int key)
 
 	while (quetab[next].key >= key)
 	{
-		kprintf("key=%d\r\n", key);
-		kprintf("quetab[next].key=%d\r\n", quetab[next].key);
-		kprintf("enter insert while next loop\r\n");
 		next = quetab[next].next;
 	}
 

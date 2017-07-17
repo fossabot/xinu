@@ -5,7 +5,7 @@
 
 .globl halt
 
-#include <arm32.h>
+#include <arm.h>
 
 /**
  * @fn void halt(void)
@@ -16,8 +16,6 @@ halt:
 	.func halt
 
 _loop:
-	ldr	r0, =string
-	bl	kprintf
 	/* Disable IRQs and FIQs.  */
 //	msr cpsr_c, #ARM_I_BIT | ARM_F_BIT
 
@@ -27,7 +25,3 @@ _loop:
 	/* Shouldn't be necessary, but repeat just in case.  */
 	b _loop
 	.endfunc
-
-.data
-string: .asciz "Reached halt.\r\n"
-

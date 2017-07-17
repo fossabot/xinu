@@ -7,7 +7,7 @@
  */
 /* Embedded XINU, Copyright (C) 2013.  All rights reserved. */
 
-#include <arm32.h>
+#include <arm.h>
 
 .text
         .align 4

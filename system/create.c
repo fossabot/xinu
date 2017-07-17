@@ -48,25 +48,20 @@ tid_typ create(void *procaddr, uint ssize, int priority,
 
     /* Allocate new stack.  */
     saddr = stkget(ssize);
-    kprintf("saddr=%d\r\n", saddr);
 
     if (SYSERR == (int)saddr)
     {
         restore(im);
-	kprintf("syserr - cannot allocate new stack.\r\n");
         return SYSERR;
     }
 
     /* Allocate new thread ID.  */
     tid = thrnew();
-    kprintf("tid=thrnew(), tid=%d\r\n", tid);
 
     if (SYSERR == (int)tid)
     {
         stkfree(saddr, ssize);
         restore(im);
-
-	kprintf("syserr - cannot allocate new thread ID.\r\n");
         return SYSERR;
     }
 
@@ -94,13 +89,11 @@ tid_typ create(void *procaddr, uint ssize, int priority,
     va_start(ap, nargs);
 
     thrptr->stkptr = setupStack(saddr, procaddr, INITRET, nargs, ap);
-    kprintf("\r\nCreate.C: Returned from setupstack: 0x%X\r\n", setupStack(saddr, procaddr, INITRET, nargs, ap));
     va_end(ap);
 
     /* Restore interrupts and return new thread TID.  */
     restore(im);
  
-    kprintf("returned tid=%d\r\n", tid);
     return tid;
 }
 
@@ -117,17 +110,13 @@ static int thrnew(void)
     /* check all NTHREAD slots    */
     for (tid = 0; tid < NTHREAD; tid++)
     {
-
-    	kprintf("enter thread ID for loop\r\n");
         nexttid = (nexttid + 1) % NTHREAD;
         
 	if (THRFREE == thrtab[nexttid].state)
         {
-	    kprintf("nexttid=%d\r\n", nexttid);
             return nexttid;
         }
     }
 
-    kprintf("syserr -- all thread IDs in use\r\n");
     return SYSERR;
 }

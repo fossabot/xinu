@@ -4,7 +4,7 @@
 /* Embedded Xinu, Copyright (C) 2013.  All rights reserved. */
 
 #include <platform.h>
-#include <arm32.h>
+#include <arm.h>
 
 /* Length of ARM context record in words (includes r0-r11, cpsr, lr, pc).  */
 #define CONTEXT_WORDS 15
@@ -41,8 +41,6 @@ void *setupStack(void *stackaddr, void *procaddr,
         --saddr;
     }
 
-    kprintf("saddr after stack align: 0x%X\r\n", saddr);
-
     /* Construct the context record for the new thread.  */
     saddr -= CONTEXT_WORDS;
 
@@ -76,7 +74,6 @@ void *setupStack(void *stackaddr, void *procaddr,
         saddr[CONTEXT_WORDS + i] = va_arg(ap, ulong);
     }
 
-    kprintf("Top of stack (saddr) = 0x%X\r\n\n", saddr);
     /* Return "top" of stack (lowest address).  */
 
     return saddr;

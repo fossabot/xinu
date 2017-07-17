@@ -31,12 +31,8 @@
  * +----------+
  */
 
-#include <arm32.h>     /* For ARM_MODE_SYS */
+#include <arm.h>     /* For ARM_MODE_SYS */
 
-#define IO_BASE 0x3f000000
-#define GP_BASE 0x3f200000
-#define GPFSEL1 0x3f200004
-#define GPSET0  0x3f20001C
 #define NULLSTK 8192
 
 .section .init
@@ -48,21 +44,26 @@
 
 	.func _start
 _start:
-	/* Save the pointer to the atags (ARM boot tags). The standard protocol for
-	 * Aarch64 (ARMv8-A) is to pass the atags pointer into register 0 (x0). And registers
-	 * x1 through x3 are initialized to zero. Refer to this link:
-	 * https://github.com/raspberrypi/tools/blob/master/armstubs/armstub8.S	*/	
-	
+	/* Save the pointer to the atags (ARM boot tags). The Pi 3 *does* pass atags,
+	 * and does so into address 0x100. We access it there, just like the Pi 1.
+	 * The standard protocol for Aarch32 (ARMv8-A) is to pass the atags pointer
+	 * into register r2. We then store it in r3, to be accessed by C code which
+	 * parses the atags. */
 	ldr 	r3, =atags_ptr
 	cmp	r2, #0
 	moveq   r2, #0x100
 	str 	r2, [r3]
 
-	bl	init_led	
-
+       /* Upon boot, the device loads into HYP (hypervisor) mode, which does not have permission to
+	* access the CPS opcode. Therefore, to enter the most privelaged mode,
+	* SYSTEM mode (11111), we first need to enter SUPERVISOR mode. This allows more privelage,
+	* so that the "cps" opcode may be used to switch to SYSTEM mode.
+	* First clear bits of CPSR, then enter supervisor mode. Increment the program counter
+        * by four to skip a 32-bit word. Upon exception return, the CPSR is changed, and
+	* we are in SUPERVISOR mode. This continues at reset handler, where SYSTEM mode is set. */
 	mrs	r0, cpsr
 	bic	r0, r0, #0x1F
-	orr	r0, r0, #0x13
+	orr	r0, r0, #ARM_MODE_SVC
 	msr	spsr_cxsf, r0
 	add	r0, pc, #4
 	msr	ELR_hyp, r0
@@ -104,8 +105,8 @@ _endvectors:
 	.func reset_handler
 reset_handler:
 
-	/* Enter SYSTEM mode with all interrupts disabled so the ARM processor is
-	 * in a known state. */
+	/* After entering SUPERVISOR mode, enter SYSTEM mode with all interrupts
+	 * disabled so the ARM processor is in a known state. */
 	cpsid	if, #ARM_MODE_SYS
 	
 	/* Copy the ARM exception table from .init section to address 0,
@@ -114,7 +115,6 @@ reset_handler:
 	ldr	r1, =_vectors
 	mcr	p15, 0, r1, c12, c0, 0	/* Write to VBAR */
 
-	bl	led_on
 
 	/* Enable the following features by modifying the ARM processor's
 	 * Control Register:
@@ -154,18 +154,30 @@ bssloopa:
 	ldr r0, =memheap
         str sp, [r0]
 
+	bl init_led
 
+	/* Move to ARM register r0 from coprocessor register p15, at op2 5, which is the MPIDR. */
+	/* If left shift is zero, start. If not, wait for interrupts in a loop. */
+	/* Refer to ARM Cortex-A53 documentation, Section 4.4.1, Table 4-122: */
+	/* http://infocenter.arm.com/help/topic/com.arm.doc.ddi0500d/DDI0500D_cortex_a53_r0p2_trm.pdf */
 	mrc p15, 0, r0, c0, c0, 5
-  	mov r1, #0xC1000000
-	bic r1, r0, r1
+	mov r2, r0
+	mov r3, #(1 << 30)
+	and r4, r3, r2
+	cmp r4, #0
+	bleq led_on
+
+  	mov r1, #0xFF
+	and r1, r0, r1
 	cmp r1, #0
 	beq __start_master
+
 not_zero:
 	wfi
 	b not_zero
 
 __start_master:
 	/* Branch to nulluser function, located in xinu/system/initialize.c
-	 * The function will initialize the system and become the null thread. */ 
+	/* The function will initialize the system and become the null thread. */ 
 	b	nulluser
 	.endfunc

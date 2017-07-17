@@ -9,6 +9,11 @@
 #include <xinu.h>
 #include <platform.h>
 
+#ifdef _XINU_PLATFORM_ARM_RPI_3_
+#include <bcm2837.h>
+#include <rpi_gpio.h>
+#endif /* _XINU_PLATFORM_ARM_RPI_3_ */
+
 /* Function prototypes */
 extern thread main(void);       /* main is the first thread created    */
 static int sysinit(void);       /* intializes system structures        */
@@ -45,30 +50,23 @@ struct platform platform;       /* Platform specific configuration     */
 				 * all Raspberry Pis (as of updated 2016 firmware) */
 void init_led(void)
 {
-	GPFSEL1 &= ~(7 << 18); // GPIO Pin 16
-	GPFSEL1 |= 1 << 18;    // Set as output
+	volatile struct rpi_gpio_regs *regptr = (volatile struct rpi_gpio *)(GPIO_REGS_BASE);
+	regptr->gpfsel[1] &= ~(7 << 18);
+	regptr->gpfsel[1] |=  (1 << 18);
 }
 
 void led_on(void)
 {
-	GPSET0 = 1 << 16;
+	volatile struct rpi_gpio_regs *regptr = (volatile struct rpi_gpio *)(GPIO_REGS_BASE);
+	regptr->gpset[0] = 1 << 16;
 }
 
 void led_off(void)
 {
-	GPCLR0 = 1 << 16;
+	volatile struct rpi_gpio_regs *regptr = (volatile struct rpi_gpio *)(GPIO_REGS_BASE);
+	regptr->gpclr[0] = 1 << 16;
 }
 
-int button_lev(void)
-{
-	return (GPLEV0 & (1 << 17));
-}
-
-interrupt gpio_handler(void)
-{
-	kprintf("gpio interrupt received... turning on led\r\n");
-	led_on();
-}
 
 /*
  * Intializes the system and becomes the null thread.
@@ -82,8 +80,7 @@ interrupt gpio_handler(void)
  */
 void nulluser(void)
 {
-	uint lev;
-	uint mode;
+	uint mode, cpuid;
 	int i;
 
 	init_led();
@@ -93,8 +90,9 @@ void nulluser(void)
 
 	/* General initialization  */
 	sysinit();
-	kprintf("Hello Xinu World!\r\n-----------------\r\n");
-    
+	kprintf("\r\n***********************************************************\r\n");
+	kprintf("******************** Hello Xinu World! ********************\r\n");
+	kprintf("***********************************************************\r\n");
 	/* Print memory usage (located in system/main.c) */
 	print_os_info();
 
@@ -102,21 +100,22 @@ void nulluser(void)
 	mode = getmode();
 	
 	kprintf("Printing out CPSR:\r\n");
-	
 	// print out bits of cpsr
 	for (i = 31; i >= 0; i--)
 		kprintf("%d", (mode >> i) & 1);
+
+	cpuid = getcpuid();
+	kprintf("\r\nPrinting out MPIDR:\r\n");
+	for (i = 31; i >= 0; i--)
+		kprintf("%d", (cpuid >> i) & 1);
+
+	kprintf("\r\n");
 
 	/* Call to test method (located in test/test_processcreation.c) */
 	testmain();
 
 	/* Enable interrupts  */
 	enable();
-
-	interruptVector[IRQ_TIMER] = 0;
-	enable_irq(IRQ_TIMER);
-	clkupdate(platform.clkfreq / CLKTICKS_PER_SEC);
-   
 
 	/* Spawn the main thread  */
 	//ready(create(main, INITSTK, INITPRIO, "MAIN", 0), RESCHED_YES);
@@ -179,7 +178,6 @@ static int sysinit(void)
 
 	/* initialize thread ready list */
 	readylist = queinit();
-	kprintf("readylist = %d, after queinit()\r\n");
 
 #ifdef UHEAP_SIZE
 	/* Initialize user memory manager */

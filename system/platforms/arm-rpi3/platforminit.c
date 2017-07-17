@@ -8,9 +8,6 @@
 #include "bcm2837.h"
 #include "../../../device/uart-pl011/pl011.h"
 
-
-
-
 /* Definitions of usable ARM boot tags. ATAG list is a list of parameters passed from
  * the bootloader to the kernel. atags_ptr is passed inside start.S as a parameter. */
 
@@ -80,53 +77,36 @@ parse_atag_list(void)
 	 * as multiple contiguous chunks.  */
 	do
 	{
-		kprintf("enter do.\r\n");
-		kprintf("atag=%X\r\n", atag);
-		kprintf("atags_ptr=%X\r\n", atags_ptr);
-		//kprintf(atag->mem.size=0x%u, atag->mem.size);
-
 		parse_again = FALSE;
 		for (atag = atags_ptr;
 		     atag->hdr.size > 2 && atag->hdr.tag != ATAG_NONE;
 		     atag = (const struct atag*)((const uint*)atag + atag->hdr.size))
 		{
-			kprintf("atag->hdr.size=0x%X\r\n", atag->hdr.size);
-			kprintf("atag->hdr.tag=0x%X\r\n", atag->hdr.tag); 
-			kprintf("Enter atags parse for loop.\r\n");
 			switch (atag->hdr.tag)
 			{
 				case ATAG_MEM:
-					kprintf("tag = ATAG_MEM case.\r\n");
-					kprintf("atag->mem.start (hopefully = maxaddr)=%u\r\n", atag->mem.start);
-					kprintf("atag->mem.size (hopefully !=0)=%u\r\n", atag->mem.size);
-
+					
 					if (maxaddr == atag->mem.start && atag->mem.size != 0)
 					{						
-						kprintf("Enter atags mem if.\r\n");
 						maxaddr += atag->mem.size;
 						parse_again = TRUE;
 					}
-					kprintf("maxaddr=%lu\r\n", maxaddr);
 					break;
 
 				case ATAG_SERIAL:
-					kprintf("Enter atags serial case.\r\n");
 					platform.serial_low = atag->serialnr.low;
 					platform.serial_high = atag->serialnr.high;
 					break;
 
 				default:
-					kprintf("Enter default.\r\n");
 					break;
 			}
 		}
-		kprintf(parse_again ? "\r\ntrue\r\n" : "\r\nfalse\r\n");
 	} while (parse_again);
 
 	/* Set platform maximum address if calculated value is not insane.  */
 	if (maxaddr >= (ulong)&_end)
 	{
-		kprintf("enter platform max address set. = %lu\r\n", maxaddr);
 		platform.maxaddr = (void*)maxaddr;
 	}
 }
