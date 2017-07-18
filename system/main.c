@@ -21,8 +21,11 @@ static void print_os_info(void);
 thread main(void)
 {
 #if HAVE_SHELL
+	kprintf("I HAZ SHELLZ\r\n");
 	int shelldevs[4][3];
 	uint nshells = 0;
+#else
+	kprintf("I HAZ NO SHELLZ\r\n");
 #endif
 
 	/* Print information about the operating system  */

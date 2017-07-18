@@ -54,7 +54,6 @@ _start:
 	moveq   r2, #0x100
 	str 	r2, [r3]
 
-	bl	init_led	
 
        /* Upon boot, the device loads into HYP (hypervisor) mode, which does not have permission to
 	* access the CPS opcode. Therefore, to enter the most privelaged mode,
@@ -115,7 +114,6 @@ reset_handler:
 	 * disabled so the ARM processor is in a known state. */
 	cpsid	if, #ARM_MODE_SYS
 
-	bl	led_on
 
 	/* Copy the ARM exception table from .init section to address 0,
 	 * including the absolute address table.  Here we assume it is exactly

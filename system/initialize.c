@@ -79,6 +79,7 @@ void nulluser(void)
 
 	/* Platform-specific initialization (system/platforms/arm-rpi3/platforminit.c) */
 	platforminit();
+	sysinit();
 
 	// cpsr
 	mode = getmode();
@@ -95,6 +96,7 @@ void nulluser(void)
 
 	kprintf("\r\n");
 
+
 	/* Call to test method (located in test/test_processcreation.c) */
 	//testmain();
 
@@ -110,9 +112,7 @@ void nulluser(void)
 	ready(create(main, INITSTK, INITPRIO, "MAIN", 0), RESCHED_YES);
 
 	/* null thread has nothing else to do but cannot exit  */
-	while (TRUE){
-    resched();
-  }
+	while (TRUE){}
 }
 
 /**

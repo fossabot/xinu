@@ -21,15 +21,16 @@ CFLAGS	 += -mno-unaligned-access
 DEFS     += -D_XINU_PLATFORM_ARM_RPI_3_
 
 # Embedded Xinu components to build into the kernel image
-APPCOMPS :=	test	    \
-#			apps    \
-#			mailbox \
-#			network \
-#			shell
+APPCOMPS :=	shell    \
+		    apps     \
+		    test     \
+		    #mailbox \
+		    #network \
+		 
 
 # Embedded Xinu device drivers to build into the kernel image
 DEVICES  := uart-pl011      \
-            tty	        	\
+            tty	        
 #           usb             \
 #            raw             \
 #            smsc9512        \

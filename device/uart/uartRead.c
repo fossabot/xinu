@@ -43,6 +43,9 @@ devcall uartRead(device *devptr, void *buf, uint len)
         return SYSERR;
     }
 
+
+    kprintf("[uartRead()] before for loop\r\n");
+	
     /* Attempt to read each byte requested.  */
     for (count = 0; count < len; count++)
     {
@@ -68,6 +71,8 @@ devcall uartRead(device *devptr, void *buf, uint len)
             uartPutc(uartptr->dev, c);
         }
     }
+
+    kprintf("[uartRead()] after for loop\r\n");
 
     /* Restore interrupts and return the number of bytes read.  */
     restore(im);

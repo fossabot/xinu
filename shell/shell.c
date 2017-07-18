@@ -198,12 +198,19 @@ thread shell(int indescrp, int outdescrp, int errdescrp)
             printf("$ ");
         }
 
+
+	printf("before control\n");
+
         /* Setup proper tty modes for input and output */
         control(stdin, TTY_CTRL_CLR_IFLAG, TTY_IRAW, NULL);
         control(stdin, TTY_CTRL_SET_IFLAG, TTY_ECHO, NULL);
 
+	printf("after control\nbefore read\n");
+	
         /* Read command */
         buflen = read(stdin, buf, SHELL_BUFLEN - 1);
+
+	printf("after read\n");
 
         /* Check for EOF and exit gracefully if seen */
         if (EOF == buflen)

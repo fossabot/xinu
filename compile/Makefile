@@ -134,6 +134,7 @@ ifneq ($(filter test, $(APPCOMPS)),)
 else
   CFLAGS += -DHAVE_TESTSUITE=0
 endif
+
 # Make the presence of the shell available to the C code.
 ifneq ($(filter shell, $(APPCOMPS)),)
   CFLAGS += -DHAVE_SHELL=1
