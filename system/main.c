@@ -11,7 +11,7 @@
 #include <thread.h>
 #include <version.h>
 
-void print_os_info(void);
+static void print_os_info(void);
 
 /**
  * Main thread.  You can modify this routine to customize what Embedded Xinu
@@ -112,7 +112,8 @@ thread main(void)
 
 		for (i = 0; i < nshells; i++)
 		{
-			sprintf(name, "SHELL%u", i);
+      kprintf("GOT HERE\r\n");
+      sprintf(name, "SHELL%u", i);
 			if (SYSERR == ready(create
 						(shell, INITSTK, INITPRIO, name, 3,
 						 shelldevs[i][0],
@@ -132,7 +133,7 @@ thread main(void)
 /* Start of kernel in memory (provided by linker)  */
 extern void _start(void);
 
-void print_os_info(void)
+static void print_os_info(void)
 {
 
 	kprintf(VERSION);

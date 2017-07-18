@@ -80,14 +80,6 @@ void nulluser(void)
 	/* Platform-specific initialization (system/platforms/arm-rpi3/platforminit.c) */
 	platforminit();
 
-	/* General initialization  */
-	sysinit();
-	kprintf("\r\n***********************************************************\r\n");
-	kprintf("******************** Hello Xinu World! ********************\r\n");
-	kprintf("***********************************************************\r\n");
-	/* Print memory usage (located in system/main.c) */
-	print_os_info();
-
 	// cpsr
 	mode = getmode();
 	
@@ -118,10 +110,9 @@ void nulluser(void)
 	ready(create(main, INITSTK, INITPRIO, "MAIN", 0), RESCHED_YES);
 
 	/* null thread has nothing else to do but cannot exit  */
-	while (TRUE)
-	{
-		
-	}
+	while (TRUE){
+    resched();
+  }
 }
 
 /**
