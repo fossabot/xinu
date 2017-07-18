@@ -20,7 +20,6 @@ void print_os_info(void);
  */
 thread main(void)
 {
-#ifndef _XINU_PLATFORM_ARM_RPI_3_
 #if HAVE_SHELL
 	int shelldevs[4][3];
 	uint nshells = 0;
@@ -125,7 +124,6 @@ thread main(void)
 			}
 		}
 	}
-#endif
 #endif
 
 	return 0;

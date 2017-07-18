@@ -103,6 +103,9 @@ void nulluser(void)
 
 	kprintf("\r\n");
 
+	/* Call to test method (located in test/test_processcreation.c) */
+	//testmain();
+
 	/* Enable interrupts  */
 	enable();
 
@@ -112,7 +115,7 @@ void nulluser(void)
 
 
 	/* Spawn the main thread  */
-	//ready(create(main, INITSTK, INITPRIO, "MAIN", 0), RESCHED_YES);
+	ready(create(main, INITSTK, INITPRIO, "MAIN", 0), RESCHED_YES);
 
 	/* null thread has nothing else to do but cannot exit  */
 	while (TRUE)
