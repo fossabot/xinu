@@ -4,7 +4,8 @@
 COMP = test
 
 # Source files for this component
-C_FILES = test_threadcreation.c
+C_FILES = test_threadcreation.c	\
+	  test_semaphore_core.c
 
 S_FILES =
 

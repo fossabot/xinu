@@ -161,23 +161,30 @@ bssloopa:
 	/* Refer to ARM Cortex-A53 documentation, Section 4.4.1, Table 4-122: */
 	/* http://infocenter.arm.com/help/topic/com.arm.doc.ddi0500d/DDI0500D_cortex_a53_r0p2_trm.pdf */
 	mrc p15, 0, r0, c0, c0, 5
-	mov r2, r0
-	mov r3, #(1 << 30)
-	and r4, r3, r2
-	cmp r4, #0
-	bleq led_on
-
-  	mov r1, #0xFF
+  	mov r1, #3
 	and r1, r0, r1
 	cmp r1, #0
-	beq __start_master
+	beq nulluser
+	cmp r1, #1
+	beq nulluser
+	cmp r1, #2
+	beq nulluser
+	cmp r1, #3
+	beq nulluser
+_startcore1:
+	b	testcore1
 
-not_zero:
-	wfi
-	b not_zero
+_startcore2:
+	b	testcore2
 
-__start_master:
+_startcore3:
+	b	testcore3
+
+_startcore4:
+	b	testcore4
+
+/*__start_master:*/
 	/* Branch to nulluser function, located in xinu/system/initialize.c
 	/* The function will initialize the system and become the null thread. */ 
-	b	nulluser
+	/*b	nulluser*/
 	.endfunc

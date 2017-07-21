@@ -7,11 +7,14 @@
 
 #include <thread.h>
 #include <arm.h>
+#include <stdint.h>
+#define CORE1_MAILBOX ((volatile __attribute__((aligned(4))) uint32_t*) (0x4000009C))
 
 extern void main(int, char *);
 void testproc(void);
 void printtid(int tid);
 void testbigargs(int, int, int, int, int, int, int, int, int);
+void somerand(void) __attribute__((naked));
 
 void testproc(void)
 {
@@ -64,6 +67,10 @@ kprintf("	        `--------' '--'     \r\n");
 
 void testmain()
 {
+	kprintf("%d is *CORE1_MAILBOX\r\n", *CORE1_MAILBOX);
+	*CORE1_MAILBOX = (uint32_t)&nulluser;
+	kprintf("%d is *CORE1_MAILBOX\r\n", *CORE1_MAILBOX);
+
 	int tid;
         kprintf("\r\n------------------------------- This is thread 1 -------------------------------\r\n");
 	tid=create((void *) testproc, INITSTK, 1, "THREAD 1", 0, NULL);
@@ -88,6 +95,14 @@ void testmain()
 		kprintf("Rescheding...\r\n");
 		resched(); 
 		kprintf("Resched complete.\r\n");
+	}
+}
+
+void somerand(void)
+{
+	while(1)
+	{
+		kprintf("dude\r\n");
 	}
 }
 

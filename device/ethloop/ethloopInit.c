@@ -9,6 +9,9 @@
 #include <device.h>
 #include <ethloop.h>
 
+#ifndef NETHLOOP
+	#define NETHLOOP 0
+#endif
 struct ethloop elooptab[NETHLOOP];
 
 /**
