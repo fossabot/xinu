@@ -16,7 +16,6 @@
 
 /* Function prototypes */
 extern thread main(void);       /* main is the first thread created    */
-static int sysinit(void);       /* intializes system structures        */
 
 /* Declarations of major kernel variables */
 struct thrent thrtab[NTHREAD];  /* Thread table                   */
@@ -29,6 +28,7 @@ struct bfpentry bfptab[NPOOL];  /* List of memory buffer pools    */
 /* Active system status */
 int thrcount;                   /* Number of live user threads         */
 tid_typ thrcurrent;             /* Id of currently running thread      */
+static int sysinit(void);       /* intializes system structures        */
 
 /* Params set by startup.S */
 void *memheap;                  /* Bottom of heap (top of O/S stack)   */

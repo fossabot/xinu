@@ -7,7 +7,7 @@ COMP = test
 C_FILES = test_threadcreation.c	\
 	  test_semaphore_core.c
 
-S_FILES =
+S_FILES = ExtraCoreSetup.S 
 
 # Add the files to the compile source path
 DIR = ${TOPDIR}/${COMP}
