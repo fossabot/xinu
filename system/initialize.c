@@ -109,13 +109,16 @@ void nulluser(void)
 	for (i = 31; i >= 0; i--)
 		kprintf("%d", (cpuid >> i) & 1);
 
-	kprintf("\r\n");
+	kprintf("\r\nYo\r\n");
 
-	/* Call to test method (located in test/test_threadcreation.c) */
-	testmain();
+	/* Call to test method (located in test/test_semaphore_core.c) */
+	testallcores();
+	kprintf("Yoyoyo\r\n");
 
 	/* Enable interrupts  */
 	enable();
+
+	kprintf("Interrupts enabled");
 
 	/* Spawn the main thread  */
 	//ready(create(main, INITSTK, INITPRIO, "MAIN", 0), RESCHED_YES);

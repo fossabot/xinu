@@ -165,23 +165,6 @@ bssloopa:
 	and r1, r0, r1
 	cmp r1, #0
 	beq nulluser
-	cmp r1, #1
-	beq nulluser
-	cmp r1, #2
-	beq nulluser
-	cmp r1, #3
-	beq nulluser
-_startcore1:
-	b	testcore1
-
-_startcore2:
-	b	testcore2
-
-_startcore3:
-	b	testcore3
-
-_startcore4:
-	b	testcore4
 
 /*__start_master:*/
 	/* Branch to nulluser function, located in xinu/system/initialize.c
