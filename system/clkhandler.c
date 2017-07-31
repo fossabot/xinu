@@ -47,6 +47,7 @@ interrupt clkhandler(void)
     {
         resched();
     }
+#endif
 }
 
 #endif /* RTCLOCK */

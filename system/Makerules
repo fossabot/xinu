@@ -14,7 +14,7 @@ C_FILES += ready.c resched.c queue.c getitem.c insert.c
 
 # Files for system timer and preemption
 C_FILES += clkinit.c clkhandler.c mdelay.c insertd.c sleep.c
-C_FILES += unsleep.c wakeup.c
+C_FILES += unsleep.c wakeup.c getprio.c
 
 C_FILES += udelay.c
 
@@ -22,7 +22,7 @@ C_FILES += udelay.c
 C_FILES += signal.c signaln.c wait.c semcreate.c semfree.c semcount.c
  
 # Files for monitors
-#C_FILES += moncreate.c monfree.c moncount.c lock.c unlock.c
+C_FILES += moncreate.c monfree.c moncount.c lock.c unlock.c
 
 # Files for memory management
 C_FILES += memget.c memfree.c stkget.c bfpalloc.c bfpfree.c bufget.c buffree.c
@@ -38,10 +38,10 @@ C_FILES += ioerr.c ionull.c read.c putc.c seek.c write.c getdev.c open.c
 C_FILES += debug.c
 
 # Files for MiniJava Compiler
-#C_FILES += minijava.c
+C_FILES += minijava.c
 
 # Files for reading tape archives
-#C_FILES += tar.c
+C_FILES += tar.c
 
 # Add the files to the compile source path
 DIR = ${TOPDIR}/${COMP}
